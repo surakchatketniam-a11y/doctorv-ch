@@ -6,6 +6,8 @@ import {
   Bookmark,
   CheckCircle2,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   Filter,
   Search,
   HeartPulse,
@@ -105,12 +107,14 @@ export default function ChapterList({
   const [selectedPart, setSelectedPart] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('default'); // 'default' | 'shortest' | 'action'
+  const [isExpandedAll, setIsExpandedAll] = useState(false);
 
   // Sync with prop if provided
   const currentBook = selectedBookFilter !== undefined ? selectedBookFilter : selectedBook;
   const setBook = (b) => {
     setSelectedBook(b);
     setSelectedPart('all');
+    setIsExpandedAll(false);
     if (setSelectedBookFilter) setSelectedBookFilter(b);
   };
 
@@ -227,6 +231,23 @@ export default function ChapterList({
 
     return groups;
   }, [filteredChapters, sortBy]);
+
+  // Progressive Disclosure: show initial groups when unfiltered, allowing user to expand cleanly
+  const isProgressiveDisclosureActive =
+    !isExpandedAll &&
+    !searchQuery.trim() &&
+    selectedPart === 'all' &&
+    !filterBookmarkOnly &&
+    groupedParts.length > 2;
+
+  const visibleGroups = isProgressiveDisclosureActive
+    ? groupedParts.slice(0, 2)
+    : groupedParts;
+
+  const totalVisibleChapters = visibleGroups.reduce((acc, g) => acc + g.chapters.length, 0);
+  const totalFilteredChapters = filteredChapters.length;
+  const remainingChaptersCount = totalFilteredChapters - totalVisibleChapters;
+  const remainingGroupsCount = groupedParts.length - visibleGroups.length;
 
   return (
     <section id="chapters-section" style={{ padding: '2.5rem 0 5rem 0', position: 'relative' }}>
@@ -510,7 +531,7 @@ export default function ChapterList({
         ) : (
           /* Chapters Grouped by Part / Section (สไตล์ DexTrial Clean Minimal Cards) */
           <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-            {groupedParts.map((group) => {
+            {visibleGroups.map((group) => {
               const totalMinutes = group.chapters.reduce((sum, c) => sum + (parseInt(c.readingTime) || 3), 0);
 
               return (
@@ -601,102 +622,125 @@ export default function ChapterList({
                             }}
                           >
                             <div>
-                              {/* Top Bar: Clean Line Art Icon + Book Origin Badge if All Books */}
-                              <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingRight: '2rem' }}>
-                                <div>{getChapterLineIcon(chap)}</div>
-
-                                {currentBook === 'all' && (
-                                  <span
-                                    className={isB1 ? 'badge-book1 badge' : 'badge-book2 badge'}
-                                    style={{ fontSize: '0.7rem', padding: '0.15rem 0.5rem', borderRadius: '6px' }}
-                                  >
-                                    {isB1 ? 'เล่ม 1' : 'เล่ม 2'}
-                                  </span>
-                                )}
-                              </div>
-
-                              {/* Title — Crisp, Bold, Clean */}
-                              <h4
+                              {/* Top Row: Category tag, read indicator, reading time */}
+                              <div
                                 style={{
-                                  fontSize: '1.15rem',
-                                  fontWeight: '800',
-                                  color: 'var(--text-primary)',
-                                  lineHeight: '1.35',
-                                  marginBottom: '0.65rem',
-                                  textAlign: 'left',
-                                  letterSpacing: '-0.01em'
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                  marginBottom: '0.75rem',
+                                  paddingRight: '2rem'
                                 }}
                               >
-                                {chap.title}
-                              </h4>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                                  <span
+                                    className={isB1 ? 'badge badge-book1' : 'badge badge-book2'}
+                                    style={{ fontSize: '0.725rem', padding: '0.15rem 0.5rem' }}
+                                  >
+                                    {isB1 ? 'เล่ม 1: ก่อนจะป่วย' : 'เล่ม 2: ก่อนสมองพัง'}
+                                  </span>
 
-                              {/* 2-Line Clean Summary */}
-                              {chap.summary && (
-                                <p
+                                  {isRead && (
+                                    <span
+                                      className="badge badge-success"
+                                      style={{ fontSize: '0.7rem', padding: '0.15rem 0.45rem' }}
+                                      title="อ่านบทความนี้แล้ว"
+                                    >
+                                      <Check size={11} strokeWidth={2.5} />
+                                      <span>อ่านแล้ว</span>
+                                    </span>
+                                  )}
+                                </div>
+
+                                <div
                                   style={{
-                                    fontSize: '0.875rem',
-                                    color: 'var(--text-secondary)',
-                                    lineHeight: '1.6',
-                                    marginBottom: '1rem',
-                                    display: '-webkit-box',
-                                    WebkitLineClamp: 3,
-                                    WebkitBoxOrient: 'vertical',
-                                    overflow: 'hidden',
-                                    textAlign: 'left'
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '0.25rem',
+                                    fontSize: '0.75rem',
+                                    color: 'var(--text-muted)'
                                   }}
                                 >
-                                  {chap.summary}
-                                </p>
-                              )}
+                                  <Clock size={12} />
+                                  <span>{chap.readingTime || '5 นาที'}</span>
+                                </div>
+                              </div>
+
+                              {/* Chapter Title & Subtle Line Art Icon */}
+                              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem', marginBottom: '0.65rem' }}>
+                                <div
+                                  style={{
+                                    width: '38px',
+                                    height: '38px',
+                                    borderRadius: '10px',
+                                    backgroundColor: 'var(--bg-secondary)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    flexShrink: 0,
+                                    marginTop: '2px',
+                                    border: '1px solid var(--border-color)'
+                                  }}
+                                >
+                                  {getChapterLineIcon(chap)}
+                                </div>
+                                <h4
+                                  style={{
+                                    fontSize: '1.05rem',
+                                    fontWeight: '700',
+                                    color: 'var(--text-primary)',
+                                    lineHeight: '1.4',
+                                    margin: 0
+                                  }}
+                                >
+                                  {chap.title}
+                                </h4>
+                              </div>
+
+                              {/* Chapter Summary Snippet */}
+                              <p
+                                style={{
+                                  fontSize: '0.875rem',
+                                  color: 'var(--text-secondary)',
+                                  lineHeight: '1.6',
+                                  margin: '0 0 0.85rem 0',
+                                  display: '-webkit-box',
+                                  WebkitLineClamp: 2,
+                                  WebkitBoxOrient: 'vertical',
+                                  overflow: 'hidden'
+                                }}
+                              >
+                                {chap.summary || (chap.sections?.[0]?.content?.slice(0, 110) + '...')}
+                              </p>
                             </div>
 
-                            {/* Minimal Footer with Action Items & Status */}
+                            {/* Card Footer: Action takeaways count + Read more indicator */}
                             <div
                               style={{
                                 paddingTop: '0.75rem',
-                                borderTop: '1px solid var(--border-light)',
+                                borderTop: '1px solid var(--border-color)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
-                                gap: '0.5rem',
-                                fontSize: '0.8rem',
-                                color: 'var(--text-muted)'
+                                fontSize: '0.8rem'
                               }}
                             >
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
-                                  <Clock size={13} />
-                                  <span>{chap.readingTime}</span>
-                                </span>
+                              <span
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '0.35rem',
+                                  color: 'var(--accent-primary)',
+                                  fontWeight: '600'
+                                }}
+                              >
+                                <span>เปิดอ่านบทนี้</span>
+                                <ChevronRight size={14} />
+                              </span>
 
-                                {chap.actionItems && chap.actionItems.length > 0 && (
-                                  <span
-                                    style={{
-                                      fontSize: '0.725rem',
-                                      padding: '0.15rem 0.5rem',
-                                      borderRadius: '6px',
-                                      backgroundColor: 'var(--action-bg)',
-                                      color: 'var(--action-text)',
-                                      fontWeight: '600',
-                                      display: 'inline-flex',
-                                      alignItems: 'center',
-                                      gap: '0.2rem'
-                                    }}
-                                  >
-                                    <span>💡 {chap.actionItems.length} ข้อปฏิบัติ</span>
-                                  </span>
-                                )}
-                              </div>
-
-                              {isRead ? (
-                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', color: 'var(--book1-color)', fontWeight: '700', fontSize: '0.775rem' }}>
-                                  <Check size={13} />
-                                  <span>อ่านแล้ว</span>
-                                </span>
-                              ) : (
-                                <span style={{ color: 'var(--accent-primary)', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '0.15rem', fontSize: '0.8rem' }}>
-                                  <span>อ่านบทนี้</span>
-                                  <ChevronRight size={14} />
+                              {chap.actionItems && chap.actionItems.length > 0 && (
+                                <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
+                                  💡 {chap.actionItems.length} ข้อปฏิบัติ
                                 </span>
                               )}
                             </div>
@@ -736,6 +780,88 @@ export default function ChapterList({
                 </div>
               );
             })}
+
+            {/* Progressive Disclosure: Expand Banner when collapsed */}
+            {isProgressiveDisclosureActive && (
+              <div
+                style={{
+                  textAlign: 'center',
+                  padding: '2.5rem 1.5rem',
+                  backgroundColor: 'var(--bg-secondary)',
+                  borderRadius: '20px',
+                  border: '1.5px dashed var(--border-color)',
+                  boxShadow: 'var(--card-shadow)',
+                  position: 'relative',
+                  marginTop: '0.5rem'
+                }}
+              >
+                <div style={{ fontWeight: '800', fontSize: '1.15rem', color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                  แสดง {totalVisibleChapters} ตอนแนะนำแรก
+                  <span style={{ fontWeight: '600', color: 'var(--text-muted)', fontSize: '0.95rem', display: 'block', marginTop: '0.2rem' }}>
+                    (ยังมีอีก {remainingChaptersCount} ตอนใน {remainingGroupsCount} หมวด)
+                  </span>
+                </div>
+                <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', maxWidth: '520px', margin: '0 auto 1.5rem auto', lineHeight: 1.6 }}>
+                  เปิดดูสารบัญทั้งหมดเพื่อเลือกอ่านตามหัวข้อที่คุณสนใจ หรือใช้สารบัญด่วนเพื่อกระโดดไปยังตอนใดก็ได้ทันที
+                </p>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => setIsExpandedAll(true)}
+                    style={{
+                      padding: '0.7rem 1.75rem',
+                      gap: '0.5rem',
+                      borderRadius: '12px',
+                      fontSize: '0.925rem'
+                    }}
+                  >
+                    <span>คลี่ดูสารบัญทั้งหมด ({totalFilteredChapters} ตอน)</span>
+                    <ChevronDown size={18} />
+                  </button>
+                  {onOpenTOC && (
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={onOpenTOC}
+                      style={{
+                        padding: '0.7rem 1.35rem',
+                        gap: '0.45rem',
+                        borderRadius: '12px',
+                        fontSize: '0.925rem'
+                      }}
+                    >
+                      <List size={18} />
+                      <span>เปิดสารบัญด่วน</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Progressive Disclosure: Collapse Control when expanded */}
+            {isExpandedAll && !searchQuery.trim() && selectedPart === 'all' && !filterBookmarkOnly && groupedParts.length > 2 && (
+              <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    setIsExpandedAll(false);
+                    const el = document.getElementById('chapters-section');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  style={{
+                    padding: '0.55rem 1.35rem',
+                    gap: '0.4rem',
+                    fontSize: '0.85rem',
+                    borderRadius: '10px'
+                  }}
+                >
+                  <ChevronUp size={16} />
+                  <span>ย่อสารบัญลง (แสดงเฉพาะตอนแนะนำ)</span>
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
