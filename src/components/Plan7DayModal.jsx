@@ -28,20 +28,45 @@ export default function Plan7DayModal({ isOpen, onClose, planItems = [], onToggl
     setCustomInput('');
   };
 
-  const handleSharePlan = () => {
+  const handleSharePlan = async () => {
     const text = `📋 แผนสุขภาพ 7 วันของฉัน (หมอวี Health Portal)\nความคืบหน้า: ${completedCount}/${planItems.length} ข้อ (${progressPercent}%)\n\n` +
       planItems.map((item, idx) => `${item.completed ? '✅' : '⬜'} ${idx + 1}. ${item.text}`).join('\n') +
       `\n\nสร้างแผนสุขภาพของคุณได้ที่: ${window.location.origin}`;
 
-    if (navigator.share) {
-      navigator.share({
-        title: 'แผนสุขภาพ 7 วันของฉัน — หมอวี Health Library',
-        text: text
-      }).catch(() => {});
+    const copyToClipboard = async () => {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+        setCopyToast(true);
+        setTimeout(() => setCopyToast(false), 2500);
+      } catch (err) {
+        console.warn('Clipboard copy failed:', err);
+      }
+    };
+
+    if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
+      try {
+        await navigator.share({
+          title: 'แผนสุขภาพ 7 วันของฉัน — หมอวี Health Library',
+          text: text
+        });
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          await copyToClipboard();
+        }
+      }
     } else {
-      navigator.clipboard.writeText(text);
-      setCopyToast(true);
-      setTimeout(() => setCopyToast(false), 2500);
+      await copyToClipboard();
     }
   };
 
@@ -209,9 +234,15 @@ export default function Plan7DayModal({ isOpen, onClose, planItems = [], onToggl
             className="btn btn-secondary"
             onClick={handleSharePlan}
             disabled={planItems.length === 0}
-            style={{ fontSize: '0.8125rem', gap: '0.35rem' }}
+            style={{
+              fontSize: '0.8125rem',
+              gap: '0.35rem',
+              color: copyToast ? '#10b981' : undefined,
+              borderColor: copyToast ? '#10b981' : undefined,
+              fontWeight: copyToast ? '700' : 'normal'
+            }}
           >
-            <Share2 size={14} />
+            {copyToast ? <CheckCircle2 size={14} style={{ color: '#10b981' }} /> : <Share2 size={14} />}
             <span>{copyToast ? 'คัดลอกสรุปสำเร็จ!' : 'แชร์สรุปแผน 7 วัน'}</span>
           </button>
 

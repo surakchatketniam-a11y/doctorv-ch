@@ -56,18 +56,43 @@ export default function DementiaComparisonDiagram() {
     }
   ];
 
-  const handleShare = () => {
+  const handleShare = async () => {
     const text = '🧠 เปรียบเทียบ: หลงลืมตามวัย VS โรคสมองเสื่อม โดย นพ.วีระพันธ์ สุวรรณนามัย\n' +
       '• หลงลืมตามวัย: ลืมชั่วคราวแต่นึกออก รู้ตัวว่าขี้ลืม และยังใช้ชีวิตประจำวันได้เอง\n' +
       '• สมองเสื่อม: ลืมแล้วจำไม่ได้อีกเลย หลงทางในที่คุ้นเคย และไม่รู้ตัวว่าตนเองผิดปกติ\n' +
       'อ่านคู่มือโรคสมองเพิ่มเติมได้ที่: ' + window.location.origin;
 
-    if (navigator.share) {
-      navigator.share({ title: 'หลงลืมตามวัย VS สมองเสื่อม — หมอวี', text }).catch(() => {});
+    const copyToClipboard = async () => {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+      } catch (err) {
+        console.warn('Clipboard write failed:', err);
+      }
+    };
+
+    if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
+      try {
+        await navigator.share({ title: 'หลงลืมตามวัย VS สมองเสื่อม — หมอวี', text });
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          await copyToClipboard();
+        }
+      }
     } else {
-      navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
+      await copyToClipboard();
     }
   };
 
@@ -177,11 +202,18 @@ export default function DementiaComparisonDiagram() {
             type="button"
             onClick={handleShare}
             className="btn btn-ghost"
-            style={{ padding: '0.45rem 0.75rem', fontSize: '0.8rem', gap: '0.3rem' }}
+            style={{
+              padding: '0.45rem 0.75rem',
+              fontSize: '0.8rem',
+              gap: '0.3rem',
+              color: copied ? '#10b981' : undefined,
+              fontWeight: copied ? '700' : 'normal',
+              borderColor: copied ? '#10b981' : undefined
+            }}
             title="แชร์แผนผังนี้"
           >
             {copied ? <CheckCircle2 size={14} style={{ color: '#10b981' }} /> : <Share2 size={14} />}
-            <span>{copied ? 'คัดลอกแล้ว' : 'แชร์'}</span>
+            <span>{copied ? 'คัดลอกสรุปแล้ว!' : 'แชร์'}</span>
           </button>
         </div>
       </div>

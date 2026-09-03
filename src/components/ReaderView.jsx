@@ -186,11 +186,24 @@ export default function ReaderView({
   // Share handlers
   const shareTitle = `${chapter.title} — ${chapter.bookTitle} (นพ.วีระพันธ์ สุวรรณนามัย)`;
 
-  const handleCopyLink = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(window.location.href);
+  const handleCopyLink = async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(window.location.href);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = window.location.href;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2500);
+    } catch (e) {
+      console.warn('Copy link failed:', e);
     }
   };
 
