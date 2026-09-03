@@ -543,3 +543,111 @@ button:focus-visible, a:focus-visible, input:focus-visible {
     display: none !important;
   }
 }
+
+/* Responsive Navbar Labeled Buttons (Desktop) */
+.nav-btn-labeled {
+  height: 40px;
+  min-height: 40px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+}
+
+.nav-btn-text {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  .nav-btn-labeled {
+    padding: 0 0.65rem !important;
+    gap: 0.35rem;
+    width: auto !important;
+    min-width: unset !important;
+  }
+
+  .nav-btn-text {
+    display: inline-block;
+    font-size: 0.825rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}
+
+/* Horizontal scroll container with smooth iOS scrolling & fade mask */
+.tabs-scroll-container {
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding: 0.25rem 0.25rem 0.65rem 0.25rem;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+.tabs-scroll-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.tabs-scroll-container::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 4px;
+}
+
+/* ========================================================
+   PRINT TO A4 STYLES (Clean Medical Handouts & Fridge Display)
+   ======================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Hide interactive, non-print UI */
+  nav,
+  .glass-nav,
+  header,
+  footer,
+  .reading-progress-bar,
+  .no-print,
+  button,
+  .btn,
+  .modal-backdrop:not(.print-active-modal) {
+    display: none !important;
+  }
+
+  /* When printing from modal */
+  .modal-backdrop.print-active-modal {
+    position: static !important;
+    background: none !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+
+  .modal-content {
+    border: none !important;
+    box-shadow: none !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  .printable-card,
+  .printable-diagram {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1 !important;
+    background: #ffffff !important;
+  }
+}

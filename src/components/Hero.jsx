@@ -36,7 +36,22 @@ export default function Hero({
 
   const [searchQuery, setSearchQuery] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [lastRead, setLastRead] = useState(null);
+  const [dismissedLastRead, setDismissedLastRead] = useState(false);
   const searchContainerRef = useRef(null);
+
+  // Load last read chapter from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('dr_v_last_read');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.chapterId && parsed.title) {
+          setLastRead(parsed);
+        }
+      }
+    } catch {}
+  }, []);
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -171,6 +186,211 @@ export default function Hero({
                 — นพ.วีระพันธ์ สุวรรณนามัย (ประสาทศัลยแพทย์)
               </span>
             </div>
+          </div>
+        </div>
+
+        {/* Continue Reading Card (Visible when user has an active reading session) */}
+        {lastRead && !dismissedLastRead && lastRead.progress > 0 && lastRead.progress < 98 && (
+          <div
+            style={{
+              maxWidth: '680px',
+              margin: '0 auto 2rem auto',
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1.5px solid var(--accent-primary)',
+              borderRadius: '16px',
+              padding: '1rem 1.25rem',
+              boxShadow: '0 8px 24px var(--accent-glow)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '1rem',
+              position: 'relative'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', minWidth: 0, flex: 1 }}>
+              <div
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '12px',
+                  backgroundColor: lastRead.bookId === 'book2' ? 'rgba(37,99,235,0.12)' : 'rgba(5,150,105,0.12)',
+                  color: lastRead.bookId === 'book2' ? 'var(--book2-color)' : 'var(--book1-color)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}
+              >
+                <BookOpen size={22} />
+              </div>
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem', flexWrap: 'wrap' }}>
+                  <span
+                    style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '700',
+                      color: lastRead.bookId === 'book2' ? 'var(--book2-color)' : 'var(--book1-color)',
+                      backgroundColor: lastRead.bookId === 'book2' ? 'rgba(37,99,235,0.1)' : 'rgba(5,150,105,0.1)',
+                      padding: '0.15rem 0.5rem',
+                      borderRadius: '6px'
+                    }}
+                  >
+                    อ่านต่อจากที่ค้างไว้ ({lastRead.progress}%)
+                  </span>
+                  <span style={{ fontSize: '0.725rem', color: 'var(--text-muted)' }}>
+                    {lastRead.bookId === 'book2' ? 'เล่มที่ 2: ก่อนสมองพัง' : 'เล่มที่ 1: ก่อนจะป่วย'}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    fontSize: '0.925rem',
+                    fontWeight: '700',
+                    color: 'var(--text-primary)',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                  }}
+                  title={lastRead.title}
+                >
+                  {lastRead.title}
+                </div>
+                {/* Progress bar track */}
+                <div style={{ height: '4px', backgroundColor: 'var(--border-color)', borderRadius: '99px', marginTop: '0.45rem', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${lastRead.progress}%`, backgroundColor: 'var(--accent-primary)', borderRadius: '99px' }} />
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0 }}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => onSelectChapter(lastRead.chapterId)}
+                style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', minHeight: '38px', gap: '0.35rem' }}
+              >
+                <span>อ่านต่อทันที</span>
+                <ChevronRight size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setDismissedLastRead(true)}
+                title="ซ่อนการแจ้งเตือนนี้"
+                aria-label="ซ่อนการแจ้งเตือนอ่านต่อ"
+                className="btn btn-ghost btn-icon"
+                style={{ width: '32px', height: '32px', minWidth: '32px', minHeight: '32px', color: 'var(--text-muted)' }}
+              >
+                <X size={16} />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Smart Onboarding Pathways (3 Quick-Action choices to eliminate cognitive overload) */}
+        <div style={{ maxWidth: '820px', margin: '0 auto 2.25rem auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '0.85rem' }}>
+            <span style={{ fontSize: '0.825rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)' }}>
+              จุดเริ่มต้นด่วนสำหรับคุณ (Quick Start Pathways)
+            </span>
+          </div>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+              gap: '0.85rem'
+            }}
+          >
+            {/* Pathway 1: FAST Emergency Stroke */}
+            <button
+              type="button"
+              onClick={() => onOpenDiagrams && onOpenDiagrams('fast')}
+              className="card"
+              style={{
+                textAlign: 'left',
+                padding: '1.15rem 1.25rem',
+                borderLeft: '4px solid #ef4444',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.35rem'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: '800', color: '#ef4444', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+                  <ShieldAlert size={14} />
+                  <span>สงสัยอาการฉุกเฉิน?</span>
+                </span>
+                <ChevronRight size={16} style={{ color: '#ef4444' }} />
+              </div>
+              <div style={{ fontWeight: '700', fontSize: '0.95rem', color: 'var(--text-primary)' }}>
+                แผนผัง FAST เช็กสัญญาณ Stroke
+              </div>
+              <div style={{ fontSize: '0.775rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                หน้าเบี้ยว แขนขาอ่อนแรง พูดไม่ชัด รู้ทันในนาทีวิกฤต
+              </div>
+            </button>
+
+            {/* Pathway 2: 2-Minute Risk Assessment */}
+            <button
+              type="button"
+              onClick={() => onOpenTools('lifestyle')}
+              className="card"
+              style={{
+                textAlign: 'left',
+                padding: '1.15rem 1.25rem',
+                borderLeft: '4px solid var(--accent-primary)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.35rem'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: '800', color: 'var(--accent-primary)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+                  <Activity size={14} />
+                  <span>ยังไม่รู้จะเริ่มตรงไหน?</span>
+                </span>
+                <ChevronRight size={16} style={{ color: 'var(--accent-primary)' }} />
+              </div>
+              <div style={{ fontWeight: '700', fontSize: '0.95rem', color: 'var(--text-primary)' }}>
+                เช็กความเสี่ยงสุขภาพใน 2 นาที
+              </div>
+              <div style={{ fontSize: '0.775rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                ประเมิน 6 เสาหลักสุขภาพ การนอนหลับ และสมองเสื่อม
+              </div>
+            </button>
+
+            {/* Pathway 3: Browse Books */}
+            <button
+              type="button"
+              onClick={onScrollToChapters}
+              className="card"
+              style={{
+                textAlign: 'left',
+                padding: '1.15rem 1.25rem',
+                borderLeft: '4px solid var(--book1-color)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.35rem'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: '800', color: 'var(--book1-color)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+                  <BookOpen size={14} />
+                  <span>อ่านตามลำดับเนื้อหา</span>
+                </span>
+                <ChevronRight size={16} style={{ color: 'var(--book1-color)' }} />
+              </div>
+              <div style={{ fontWeight: '700', fontSize: '0.95rem', color: 'var(--text-primary)' }}>
+                เลือกอ่านจาก 2 หนังสือ 61 ตอน
+              </div>
+              <div style={{ fontSize: '0.775rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                ก่อนจะป่วย (39 ตอน) • ก่อนสมองพัง (22 ตอน)
+              </div>
+            </button>
           </div>
         </div>
 

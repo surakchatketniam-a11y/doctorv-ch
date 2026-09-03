@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Calendar, CheckCircle2, Circle, Plus, Trash2, Share2, Sparkles, Trophy, ChevronRight, Check } from 'lucide-react';
+import { X, Calendar, CheckCircle2, Circle, Plus, Trash2, Share2, Sparkles, Trophy, ChevronRight, Check, Link2 } from 'lucide-react';
 
 export default function Plan7DayModal({ isOpen, onClose, planItems = [], onTogglePlanItem, onRemovePlanItem, onAddCustomItem }) {
   const [customInput, setCustomInput] = useState('');
   const [copyToast, setCopyToast] = useState(false);
+  const [linkToast, setLinkToast] = useState(false);
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -28,31 +29,50 @@ export default function Plan7DayModal({ isOpen, onClose, planItems = [], onToggl
     setCustomInput('');
   };
 
+  const generateMagicLink = () => {
+    try {
+      const payload = planItems.map(item => ({ text: item.text, completed: !!item.completed }));
+      const jsonStr = JSON.stringify(payload);
+      const b64 = btoa(encodeURIComponent(jsonStr));
+      return `${window.location.origin}${window.location.pathname}#plan_data=${b64}`;
+    } catch {
+      return window.location.href;
+    }
+  };
+
+  const copyTextToClipboard = async (text) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      return true;
+    }
+  };
+
+  const handleCopyMagicLink = async () => {
+    try {
+      const magicLink = generateMagicLink();
+      await copyTextToClipboard(magicLink);
+      setLinkToast(true);
+      setTimeout(() => setLinkToast(false), 2500);
+    } catch (err) {
+      console.warn('Failed to copy magic link:', err);
+    }
+  };
+
   const handleSharePlan = async () => {
+    const magicLink = generateMagicLink();
     const text = `📋 แผนสุขภาพ 7 วันของฉัน (หมอวี Health Portal)\nความคืบหน้า: ${completedCount}/${planItems.length} ข้อ (${progressPercent}%)\n\n` +
       planItems.map((item, idx) => `${item.completed ? '✅' : '⬜'} ${idx + 1}. ${item.text}`).join('\n') +
-      `\n\nสร้างแผนสุขภาพของคุณได้ที่: ${window.location.origin}`;
-
-    const copyToClipboard = async () => {
-      try {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          await navigator.clipboard.writeText(text);
-        } else {
-          const textarea = document.createElement('textarea');
-          textarea.value = text;
-          textarea.style.position = 'fixed';
-          textarea.style.opacity = '0';
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textarea);
-        }
-        setCopyToast(true);
-        setTimeout(() => setCopyToast(false), 2500);
-      } catch (err) {
-        console.warn('Clipboard copy failed:', err);
-      }
-    };
+      `\n\n🔗 เปิดดูหรือทำต่อบนอุปกรณ์ของคุณ (Magic Link):\n${magicLink}`;
 
     if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
       try {
@@ -62,11 +82,15 @@ export default function Plan7DayModal({ isOpen, onClose, planItems = [], onToggl
         });
       } catch (err) {
         if (err.name !== 'AbortError') {
-          await copyToClipboard();
+          await copyTextToClipboard(text);
+          setCopyToast(true);
+          setTimeout(() => setCopyToast(false), 2500);
         }
       }
     } else {
-      await copyToClipboard();
+      await copyTextToClipboard(text);
+      setCopyToast(true);
+      setTimeout(() => setCopyToast(false), 2500);
     }
   };
 
@@ -228,23 +252,45 @@ export default function Plan7DayModal({ isOpen, onClose, planItems = [], onToggl
         </form>
 
         {/* Footer Actions */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.75rem', borderTop: '1px solid var(--border-light)', flexShrink: 0 }}>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={handleSharePlan}
-            disabled={planItems.length === 0}
-            style={{
-              fontSize: '0.8125rem',
-              gap: '0.35rem',
-              color: copyToast ? '#10b981' : undefined,
-              borderColor: copyToast ? '#10b981' : undefined,
-              fontWeight: copyToast ? '700' : 'normal'
-            }}
-          >
-            {copyToast ? <CheckCircle2 size={14} style={{ color: '#10b981' }} /> : <Share2 size={14} />}
-            <span>{copyToast ? 'คัดลอกสรุปสำเร็จ!' : 'แชร์สรุปแผน 7 วัน'}</span>
-          </button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.75rem', borderTop: '1px solid var(--border-light)', flexShrink: 0, gap: '0.5rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleSharePlan}
+              disabled={planItems.length === 0}
+              style={{
+                fontSize: '0.8125rem',
+                gap: '0.35rem',
+                padding: '0.45rem 0.85rem',
+                color: copyToast ? '#10b981' : undefined,
+                borderColor: copyToast ? '#10b981' : undefined,
+                fontWeight: copyToast ? '700' : 'normal'
+              }}
+            >
+              {copyToast ? <CheckCircle2 size={14} style={{ color: '#10b981' }} /> : <Share2 size={14} />}
+              <span>{copyToast ? 'คัดลอกสรุปแล้ว!' : 'แชร์สรุปแผน'}</span>
+            </button>
+
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleCopyMagicLink}
+              disabled={planItems.length === 0}
+              title="คัดลอกลิงก์พกพาเพื่อเปิดต่อบนมือถือหรืออุปกรณ์อื่น (Magic Link)"
+              style={{
+                fontSize: '0.8125rem',
+                gap: '0.35rem',
+                padding: '0.45rem 0.85rem',
+                color: linkToast ? '#10b981' : undefined,
+                borderColor: linkToast ? '#10b981' : undefined,
+                fontWeight: linkToast ? '700' : 'normal'
+              }}
+            >
+              {linkToast ? <CheckCircle2 size={14} style={{ color: '#10b981' }} /> : <Link2 size={14} />}
+              <span>{linkToast ? 'คัดลอกลิงก์สำเร็จ!' : 'ลิงก์พกพา'}</span>
+            </button>
+          </div>
 
           <button
             type="button"

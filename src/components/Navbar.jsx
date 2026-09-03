@@ -113,71 +113,76 @@ export default function Navbar({
           </div>
         </button>
 
-        {/* Action Buttons with 44px touch targets */}
+        {/* Action Buttons with responsive text labels on desktop and 44px touch targets on mobile */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', flexShrink: 0 }}>
           <button
-            className="btn btn-ghost btn-icon"
+            className="btn btn-ghost nav-btn-labeled"
             onClick={onOpenTOC}
             title="สารบัญด่วน (เปิดดู 61 บทความทั้งหมด)"
             aria-label="สารบัญด่วน 61 บทความ"
             style={{ color: 'var(--text-primary)' }}
           >
-            <List size={19} />
+            <List size={18} />
+            <span className="nav-btn-text">สารบัญ</span>
           </button>
 
           <button
-            className="btn btn-ghost btn-icon"
+            className="btn btn-ghost nav-btn-labeled"
             onClick={onOpenSearch}
             title="ค้นหาบทความข้ามทั้ง 2 เล่ม (Search)"
             aria-label="ค้นหาบทความในคลังความรู้สุขภาพ"
           >
-            <Search size={19} />
+            <Search size={18} />
+            <span className="nav-btn-text">ค้นหา</span>
           </button>
 
           <button
-            className="btn btn-ghost btn-icon"
+            className="btn btn-ghost nav-btn-labeled"
             onClick={() => onOpenDiagrams && onOpenDiagrams('fast')}
             title="คลังแผนผังทางการแพทย์ & อินโฟกราฟิก (Medical Diagrams Hub)"
             aria-label="คลังแผนผังทางการแพทย์"
             style={{ color: 'var(--book2-color)' }}
           >
-            <Layers size={19} />
+            <Layers size={18} />
+            <span className="nav-btn-text">แผนผัง</span>
           </button>
 
           <button
-            className="btn btn-ghost btn-icon"
+            className="btn btn-ghost nav-btn-labeled"
             onClick={() => onOpenTools('lifestyle')}
             title="เครื่องมือประเมินสุขภาพ (FAST Test / เช็กความเสี่ยง NCDs / สมอง / การนอน)"
             aria-label="เครื่องมือประเมินสุขภาพ 4 หมวด"
             style={{ color: 'var(--accent-primary)' }}
           >
-            <Activity size={19} />
+            <Activity size={18} />
+            <span className="nav-btn-text">ประเมินสุขภาพ</span>
           </button>
 
           <button
-            className="btn btn-ghost btn-icon"
+            className="btn btn-ghost nav-btn-labeled"
             onClick={onOpenPlan}
             title={`แผนสุขภาพ 7 วันของฉัน (${planCount} เป้าหมาย)`}
             aria-label="แผนสุขภาพ 7 วันของฉัน"
             style={{ position: 'relative', color: planCount > 0 ? 'var(--book1-color)' : undefined }}
           >
-            <Calendar size={19} />
+            <Calendar size={18} />
+            <span className="nav-btn-text">แผน 7 วัน</span>
             {planCount > 0 && (
               <span
                 style={{
-                  position: 'absolute',
-                  top: '6px',
-                  right: '6px',
+                  position: 'relative',
                   backgroundColor: 'var(--book1-color)',
                   color: '#ffffff',
                   fontSize: '0.65rem',
                   fontWeight: '800',
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '50%',
-                  display: 'flex',
+                  minWidth: '17px',
+                  height: '17px',
+                  padding: '0 4px',
+                  borderRadius: '999px',
+                  display: 'inline-flex',
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  marginLeft: '2px'
                 }}
               >
                 {planCount}
@@ -192,7 +197,7 @@ export default function Navbar({
             aria-label={`บทความที่บันทึกไว้ ${bookmarksCount} บท`}
             style={{ position: 'relative' }}
           >
-            <Bookmark size={19} />
+            <Bookmark size={18} />
             {bookmarksCount > 0 && (
               <span
                 style={{
@@ -209,12 +214,13 @@ export default function Navbar({
           </button>
 
           <button
-            className="btn btn-ghost btn-icon nav-desktop-only-btn"
+            className="btn btn-ghost nav-btn-labeled nav-desktop-only-btn"
             onClick={onOpenAuthor}
             title="ประวัติผู้เขียนและช่องทางติดตาม (นพ.วีระพันธ์ สุวรรณนามัย)"
             aria-label="ประวัติผู้เขียน นพ.วีระพันธ์ สุวรรณนามัย"
           >
-            <User size={19} />
+            <User size={18} />
+            <span className="nav-btn-text">หมอวี</span>
           </button>
 
           <div

@@ -8,7 +8,8 @@ import {
   Flame,
   Brain,
   Layers,
-  ChevronRight
+  ChevronRight,
+  Printer
 } from 'lucide-react';
 import FastStrokeDiagram from './FastStrokeDiagram';
 import GlymphaticSleepDiagram from './GlymphaticSleepDiagram';
@@ -84,9 +85,13 @@ export default function MedicalDiagramsModal({ isOpen, onClose, initialDiagram =
   const currentDiagramObj = diagramList.find(d => d.id === activeDiagram) || diagramList[0];
   const ActiveComponent = currentDiagramObj.component;
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div
-      className="modal-backdrop"
+      className="modal-backdrop print-active-modal"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -120,58 +125,72 @@ export default function MedicalDiagramsModal({ isOpen, onClose, initialDiagram =
               รวบรวมแผนผังกลไกทางสรีรวิทยาและโรคสมองที่เข้าใจง่าย ตามหลักฐานการแพทย์โดย นพ.วีระพันธ์ สุวรรณนามัย
             </p>
           </div>
-          <button
-            type="button"
-            className="btn btn-ghost btn-icon"
-            onClick={onClose}
-            aria-label="ปิดคลังแผนผังการแพทย์"
-          >
-            <X size={20} />
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0 }}>
+            <button
+              type="button"
+              className="btn btn-secondary no-print"
+              onClick={handlePrint}
+              title="พิมพ์แผ่นภาพนี้ลงกระดาษ A4 (Print to A4 / Save PDF)"
+              style={{
+                fontSize: '0.8rem',
+                padding: '0.45rem 0.85rem',
+                gap: '0.35rem',
+                minHeight: '38px'
+              }}
+            >
+              <Printer size={15} />
+              <span>พิมพ์ A4</span>
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost btn-icon no-print"
+              onClick={onClose}
+              aria-label="ปิดคลังแผนผังการแพทย์"
+              style={{ minHeight: '38px', height: '38px', width: '38px' }}
+            >
+              <X size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Diagram Switcher Tabs */}
-        <div
-          style={{
-            display: 'flex',
-            gap: '0.4rem',
-            overflowX: 'auto',
-            paddingBottom: '0.65rem',
-            marginBottom: '1rem',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none'
-          }}
-        >
-          {diagramList.map((d) => {
-            const IconC = d.icon;
-            const isActive = activeDiagram === d.id;
+        <div style={{ position: 'relative', marginBottom: '0.75rem' }}>
+          <div className="tabs-scroll-container">
+            {diagramList.map((d) => {
+              const IconC = d.icon;
+              const isActive = activeDiagram === d.id;
 
-            return (
-              <button
-                key={d.id}
-                type="button"
-                onClick={() => setActiveDiagram(d.id)}
-                className={`btn ${isActive ? 'btn-primary' : 'btn-secondary'}`}
-                style={{
-                  padding: '0.45rem 0.85rem',
-                  fontSize: '0.8rem',
-                  flexShrink: 0,
-                  gap: '0.35rem',
-                  backgroundColor: isActive ? d.color : undefined,
-                  borderColor: isActive ? d.color : undefined,
-                  color: isActive ? '#fff' : undefined,
-                  borderRadius: '10px'
-                }}
-              >
-                <IconC size={15} />
-                <span>{d.title}</span>
-              </button>
-            );
-          })}
+              return (
+                <button
+                  key={d.id}
+                  type="button"
+                  onClick={() => setActiveDiagram(d.id)}
+                  className={`btn ${isActive ? 'btn-primary' : 'btn-secondary'}`}
+                  style={{
+                    padding: '0.5rem 0.95rem',
+                    fontSize: '0.825rem',
+                    flexShrink: 0,
+                    gap: '0.4rem',
+                    backgroundColor: isActive ? d.color : undefined,
+                    borderColor: isActive ? d.color : undefined,
+                    color: isActive ? '#fff' : undefined,
+                    borderRadius: '10px',
+                    minHeight: '38px'
+                  }}
+                >
+                  <IconC size={15} />
+                  <span>{d.title}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Active Diagram Rendering Container */}
-        <div style={{ flex: 1, overflowY: 'auto', paddingRight: '0.25rem' }}>
+        <div
+          className="printable-diagram"
+          style={{ flex: 1, overflowY: 'auto', paddingRight: '0.25rem' }}
+        >
           <ActiveComponent />
         </div>
       </div>

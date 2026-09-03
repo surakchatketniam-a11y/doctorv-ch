@@ -14,7 +14,7 @@ import ScrollToTop from './components/ScrollToTop';
 import Footer from './components/Footer';
 import allChaptersData from './data/all_chapters.json';
 import booksData from './data/books.json';
-import { AlertCircle, ArrowLeft, BookOpen } from 'lucide-react';
+import { AlertCircle, ArrowLeft, BookOpen, CheckCircle2 } from 'lucide-react';
 
 export default function App() {
   // Theme State with System auto-detect
@@ -70,6 +70,7 @@ export default function App() {
   const [isDiagramsModalOpen, setIsDiagramsModalOpen] = useState(false);
   const [selectedDiagram, setSelectedDiagram] = useState('fast');
   const [filterBookmarkOnly, setFilterBookmarkOnly] = useState(false);
+  const [importToast, setImportToast] = useState(false);
 
   // Apply Theme Attribute to <html>
   useEffect(() => {
@@ -92,12 +93,12 @@ export default function App() {
     localStorage.setItem('dr_v_7day_plan', JSON.stringify(planItems));
   }, [planItems]);
 
-  // Handle URL Hash for Deep Linking (e.g. #read=b1_intro_0)
+  // Handle URL Hash for Deep Linking & Magic Links (e.g. #read=b1_intro_0, #plan_data=...)
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
       if (hash.startsWith('#read=')) {
-        const rawId = hash.replace('#read=', '');
+        const rawId = hash.replace('#read=', '').replace('&resume=true', '');
         let id = rawId;
         try {
           id = decodeURIComponent(rawId);
@@ -110,6 +111,30 @@ export default function App() {
           setActiveView('reader');
         } else {
           setActiveView('not_found');
+        }
+      } else if (hash.startsWith('#plan_data=')) {
+        const rawData = hash.replace('#plan_data=', '');
+        try {
+          const jsonStr = decodeURIComponent(atob(rawData));
+          const importedItems = JSON.parse(jsonStr);
+          if (Array.isArray(importedItems) && importedItems.length > 0) {
+            setPlanItems((prev) => {
+              const existingTexts = new Set(prev.map(i => i.text));
+              const newItems = importedItems
+                .filter(i => i && i.text && !existingTexts.has(i.text))
+                .map((i, idx) => ({
+                  id: `magic_${Date.now()}_${idx}`,
+                  text: i.text,
+                  completed: !!i.completed
+                }));
+              return [...prev, ...newItems];
+            });
+            setIsPlanModalOpen(true);
+            setImportToast(true);
+            setTimeout(() => setImportToast(false), 4000);
+          }
+        } catch (e) {
+          console.warn('Failed to parse plan_data from URL:', e);
         }
       } else if (hash === '#tools' || hash.startsWith('#tools=')) {
         const tab = hash.replace('#tools=', '').replace('#tools', '') || 'lifestyle';
@@ -377,6 +402,32 @@ export default function App() {
 
       {/* Floating Scroll To Top Button */}
       <ScrollToTop />
+
+      {/* Floating Magic Link Import Toast Notification */}
+      {importToast && (
+        <div
+          role="status"
+          style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            zIndex: 9999,
+            backgroundColor: '#059669',
+            color: '#ffffff',
+            padding: '0.85rem 1.35rem',
+            borderRadius: '14px',
+            boxShadow: '0 12px 32px rgba(5, 150, 105, 0.4)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.65rem',
+            fontSize: '0.9rem',
+            fontWeight: '600'
+          }}
+        >
+          <CheckCircle2 size={20} />
+          <span>นำเข้าเป้าหมายจากลิงก์แผน 7 วันสำเร็จแล้ว!</span>
+        </div>
+      )}
     </div>
   );
 }

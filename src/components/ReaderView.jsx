@@ -106,9 +106,25 @@ export default function ReaderView({
     setTocBookTab(chapter.bookId);
   }, [chapter.bookId]);
 
-  // Scroll to top
+  // Handle scroll position (scroll to top or restore position if resuming)
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    let hasRestored = false;
+    try {
+      const saved = localStorage.getItem('dr_v_last_read');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.chapterId === chapter.id && parsed.scrollY > 150 && (window.location.hash.includes('resume') || parsed.progress < 95)) {
+          setTimeout(() => {
+            window.scrollTo({ top: parsed.scrollY, behavior: 'smooth' });
+          }, 150);
+          hasRestored = true;
+        }
+      }
+    } catch {}
+
+    if (!hasRestored) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }, [chapter.id]);
 
   // Handle Escape key to close TOC drawer or share menu
@@ -123,19 +139,42 @@ export default function ReaderView({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Track scroll progress
+  // Track scroll progress & persist to dr_v_last_read
   useEffect(() => {
+    let timer = null;
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (totalHeight > 0) {
         const currentProgress = (window.scrollY / totalHeight) * 100;
-        setScrollProgress(Math.min(100, Math.max(0, currentProgress)));
+        const clamped = Math.min(100, Math.max(0, currentProgress));
+        setScrollProgress(clamped);
+
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+          try {
+            localStorage.setItem(
+              'dr_v_last_read',
+              JSON.stringify({
+                chapterId: chapter.id,
+                title: chapter.title,
+                bookId: chapter.bookId,
+                partTitle: chapter.partTitle || '',
+                progress: Math.round(clamped),
+                scrollY: window.scrollY,
+                timestamp: Date.now()
+              })
+            );
+          } catch {}
+        }, 250);
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [chapter.id]);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (timer) clearTimeout(timer);
+    };
+  }, [chapter.id, chapter.title, chapter.bookId, chapter.partTitle]);
 
   // Font size mapper
   const getFontSizeStyle = () => {
