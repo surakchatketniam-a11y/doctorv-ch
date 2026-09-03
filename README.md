@@ -1,100 +1,64 @@
-# vinext-starter
+# 🧠 Doctor V Health Library — คลังความรู้สุขภาพเชิงป้องกันและโรคสมอง
+> เว็บแอปพลิเคชันคลังความรู้สุขภาพและโรคสมอง รวบรวมองค์ความรู้จากหนังสือ 2 เล่มของ **นพ.วีระพันธ์ สุวรรณนามัย (หมอวี)**  
+> 1. **"ก่อนจะป่วย" (39 ตอน):** 6 เสาหลักเวชศาสตร์วิถีชีวิตเพื่อการป้องกันและฟื้นฟูโรค NCDs  
+> 2. **"ก่อนสมองพัง" (22 ตอน):** เจาะลึกการดูแล ฟื้นฟู และป้องกันโรคหลอดเลือดสมอง อัลไซเมอร์ และโรคทางระบบประสาท  
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+---
 
-## Prerequisites
+## 🌟 ฟีเจอร์หลัก (Key Features)
 
-- Node.js `>=22.13.0`
+- 📖 **รวม 61 บทความสมบูรณ์:** อ่านต่อเนื่องข้ามทั้ง 2 เล่ม ค้นหาทันใจ (Instant Search Preview)
+- 🎨 **Clean Minimal Editorial Design:** สไตล์ DexTrial เน้นความสบายตา อ่านง่าย การ์ดคลีน ไม่เน้นสีสันฉูดฉาด
+- 🩺 **Phase 7 แผนผังการแพทย์อินเตอร์แอคทีฟ (Interactive Medical Diagrams Hub):**
+  1. 🚨 **FAST Stroke & Golden Hour 4.5 ชม.:** สัญญาณเตือนพร้อมไทม์ไลน์การรักษาและปุ่มโทรฉุกเฉิน 1669
+  2. 🧠 **Glymphatic System & Sleep Stages:** กลไกชะล้างสมองตอนหลับลึกและวงจรการนอน 90 นาที
+  3. 🌿 **6 เสาหลักเวชศาสตร์วิถีชีวิต:** The 6 Pillars พร้อมเป้าหมายตัวเลขทางคลินิก
+  4. 🔥 **ไทม์ไลน์ IF & Autophagy:** กลไกสลับโหมดพลังงานจากน้ำตาลสู่ไขมันและการรีไซเคิลเซลล์
+  5. 🧩 **หลงลืมตามวัย VS โรคสมองเสื่อม:** ตารางเปรียบเทียบ 7 พฤติกรรมเพื่อการคัดกรอง
+  - ทุกแผนผังรองรับโหมด **ขยายเต็มจอ (Lightbox)**, ย่อ/ขยาย (Zoom), และปุ่มแชร์ลง LINE ใน 1 คลิก
+- ⚡ **Floating Reading Bar:** แถบควบคุมการอ่านลอยตัว แสดง % การอ่าน, คำนวณเวลาที่เหลือจริงตามความยาว, ปรับขนาดฟอนต์ และเปลี่ยนธีม (Light / Sepia / Dark)
+- 📊 **เครื่องมือประเมินสุขภาพตนเอง 4 หมวด (Health Tools):**
+  - FAST Stroke Test
+  - เช็กความเสี่ยง NCDs 6 เสาหลัก (เชื่อมโยงสู่บทความแนะนำเฉพาะบุคคล)
+  - แบบประเมินสมองเสื่อม (Dementia Screening)
+  - แบบประเมินคุณภาพการนอนหลับ
+- 📅 **แผนสุขภาพ 7 วันของฉัน (Action Habit Loop):** บันทึกข้อปฏิบัติจากบทความและแบบประเมินลงใน Checklist 7 วัน พร้อมปุ่มคัดลอกแชร์ลง LINE
+- 🔖 **Bookmark & Reading History:** จดจำบทความที่ชอบและบันทึกประวัติการอ่านลงในเครื่องแบบส่วนตัว 100%
 
-## Quick Start
+---
+
+## 🚀 การติดตั้งและรันโปรเจกต์ (Getting Started)
+
+### ความต้องการของระบบ:
+- Node.js 18.0 ขึ้นไป
+- npm หรือ yarn หรือ pnpm
 
 ```bash
+# ติดตั้ง dependencies
 npm install
+
+# รันโหมด Development (Vite Dev Server)
 npm run dev
+
+# บิลด์สำหรับ Production
 npm run build
+
+# ทดสอบรันไฟล์ Production Build
+npm run preview
 ```
 
-This starter does not use `wrangler.jsonc`.
+---
 
-## Included Shape
+## 🛠️ เทคโนโลยีที่ใช้ (Tech Stack)
+- **Frontend Framework:** React 19
+- **Build Tool / Bundler:** Vite 6
+- **Icons:** Lucide React
+- **Celebration Effects:** Canvas Confetti
+- **Typography & Styling:** Vanilla CSS Variables, Modular Components, Mobile-first Responsive Design
 
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+---
 
-## Workspace Auth Headers
-
-Signed-in visitors receive both `oai-authenticated-user-id` and `oai-authenticated-user-email`. Private Sites require every visitor to sign in; public Sites may also have anonymous visitors, for whom neither header is present.
-
-The user ID is stable for the same user on the same Site and different across Sites. Email and name are intended for display or contact purposes.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const userId = requestHeaders.get("oai-authenticated-user-id");
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
-```
-
-## Optional Dispatch-Owned ChatGPT Sign-In
-
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
-
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
-
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
-
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
-
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
-
-## Useful Commands
-
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+## 👨‍⚕️ เกี่ยวกับผู้เขียน
+**นพ.วีระพันธ์ สุวรรณนามัย (หมอวี)**  
+ประสาทศัลยแพทย์ และ แพทย์เวชศาสตร์วิถีชีวิต (Lifestyle Medicine)  
+ผู้ก่อตั้งช่องให้ความรู้สุขภาพ Dr. V Channel
