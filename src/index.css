@@ -520,6 +520,11 @@ button:focus-visible, a:focus-visible, input:focus-visible {
     display: none !important;
   }
 
+  /* Consolidate navigation: hide duplicate buttons in top navbar on mobile, leaving bottom nav to handle them */
+  .nav-desktop-only {
+    display: none !important;
+  }
+
   .nav-subtitle {
     display: none !important;
   }

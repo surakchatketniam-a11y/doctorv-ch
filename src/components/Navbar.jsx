@@ -113,10 +113,10 @@ export default function Navbar({
           </div>
         </button>
 
-        {/* Action Buttons with responsive text labels on desktop and 44px touch targets on mobile */}
+        {/* Action Buttons: on mobile (<= 640px) primary navigation is handled by MobileBottomNav */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', flexShrink: 0 }}>
           <button
-            className="btn btn-ghost nav-btn-labeled"
+            className="btn btn-ghost nav-btn-labeled nav-desktop-only"
             onClick={onOpenTOC}
             title="สารบัญด่วน (เปิดดู 61 บทความทั้งหมด)"
             aria-label="สารบัญด่วน 61 บทความ"
@@ -127,7 +127,7 @@ export default function Navbar({
           </button>
 
           <button
-            className="btn btn-ghost nav-btn-labeled"
+            className="btn btn-ghost nav-btn-labeled nav-desktop-only"
             onClick={onOpenSearch}
             title="ค้นหาบทความข้ามทั้ง 2 เล่ม (Search)"
             aria-label="ค้นหาบทความในคลังความรู้สุขภาพ"
@@ -137,7 +137,7 @@ export default function Navbar({
           </button>
 
           <button
-            className="btn btn-ghost nav-btn-labeled"
+            className="btn btn-ghost nav-btn-labeled nav-desktop-only"
             onClick={() => onOpenDiagrams && onOpenDiagrams('fast')}
             title="คลังแผนผังทางการแพทย์ & อินโฟกราฟิก (Medical Diagrams Hub)"
             aria-label="คลังแผนผังทางการแพทย์"
@@ -148,7 +148,7 @@ export default function Navbar({
           </button>
 
           <button
-            className="btn btn-ghost nav-btn-labeled"
+            className="btn btn-ghost nav-btn-labeled nav-desktop-only"
             onClick={() => onOpenTools('lifestyle')}
             title="เครื่องมือประเมินสุขภาพ (FAST Test / เช็กความเสี่ยง NCDs / สมอง / การนอน)"
             aria-label="เครื่องมือประเมินสุขภาพ 4 หมวด"
@@ -159,7 +159,7 @@ export default function Navbar({
           </button>
 
           <button
-            className="btn btn-ghost nav-btn-labeled"
+            className="btn btn-ghost nav-btn-labeled nav-desktop-only"
             onClick={onOpenPlan}
             title={`แผนสุขภาพ 7 วันของฉัน (${planCount} เป้าหมาย)`}
             aria-label="แผนสุขภาพ 7 วันของฉัน"
@@ -214,7 +214,7 @@ export default function Navbar({
           </button>
 
           <button
-            className="btn btn-ghost nav-btn-labeled nav-desktop-only-btn"
+            className="btn btn-ghost nav-btn-labeled nav-desktop-only"
             onClick={onOpenAuthor}
             title="ประวัติผู้เขียนและช่องทางติดตาม (นพ.วีระพันธ์ สุวรรณนามัย)"
             aria-label="ประวัติผู้เขียน นพ.วีระพันธ์ สุวรรณนามัย"
@@ -224,6 +224,7 @@ export default function Navbar({
           </button>
 
           <div
+            className="nav-desktop-only"
             style={{
               width: '1px',
               height: '22px',
