@@ -945,9 +945,12 @@ export default function ReaderView({
           aria-label="แถบเครื่องมือการอ่านลอยตัว"
           style={{
             position: 'fixed',
-            bottom: '1.5rem',
+            bottom: 'max(env(safe-area-inset-bottom, 0px), 1.25rem)',
             left: '50%',
-            transform: 'translateX(-50%)',
+            transform: `translateX(-50%) ${!isHeaderVisible ? 'translateY(80px)' : 'translateY(0)'}`,
+            transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease',
+            opacity: isHeaderVisible ? 1 : 0,
+            pointerEvents: isHeaderVisible ? 'auto' : 'none',
             zIndex: 45,
             display: 'flex',
             alignItems: 'center',

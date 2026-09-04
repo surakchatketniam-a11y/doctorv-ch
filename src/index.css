@@ -621,6 +621,15 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   border-radius: 4px;
 }
 
+@media (max-width: 640px) {
+  .scroll-to-top-btn {
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 16px !important;
+    width: 44px !important;
+    height: 44px !important;
+  }
+}
+
 /* ========================================================
    PRINT TO A4 STYLES (Clean Medical Handouts & Fridge Display)
    ======================================================== */

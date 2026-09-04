@@ -402,8 +402,8 @@ export default function App() {
         onClose={() => setIsDiagramsModalOpen(false)}
       />
 
-      {/* Floating Scroll To Top Button */}
-      <ScrollToTop />
+      {/* Floating Scroll To Top Button (Visible on Home screen only, never overlapping ReaderView) */}
+      {activeView === 'home' && <ScrollToTop />}
 
       {/* PWA Install Banner (Visible on Home screen only, not blocking reading) */}
       {activeView === 'home' && <PWAInstallBanner />}
