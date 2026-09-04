@@ -58,6 +58,8 @@ export default function ReaderView({
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [tocBookTab, setTocBookTab] = useState('book1');
   const [addedPlanItem, setAddedPlanItem] = useState(null);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const lastScrollY = useRef(0);
 
   // Find active chapter from all chapters
   const currentIdx = allChaptersData.findIndex((c) => c.id === chapterId);
@@ -139,10 +141,20 @@ export default function ReaderView({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Track scroll progress & persist to dr_v_last_read
+  // Track scroll progress & persist to dr_v_last_read (with mobile headroom auto-hide)
   useEffect(() => {
     let timer = null;
     const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Auto-hide header when scrolling down in reading mode, restore when scrolling up
+      if (currentScrollY > 120 && currentScrollY > lastScrollY.current + 12) {
+        setIsHeaderVisible(false);
+      } else if (currentScrollY < lastScrollY.current - 8 || currentScrollY < 80) {
+        setIsHeaderVisible(true);
+      }
+      lastScrollY.current = currentScrollY;
+
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (totalHeight > 0) {
         const currentProgress = (window.scrollY / totalHeight) * 100;
@@ -304,15 +316,18 @@ export default function ReaderView({
         }}
       />
 
-      {/* Reader Sticky Header (Single Clean Header) */}
+      {/* Reader Sticky Header (Single Clean Header with Auto-hide on mobile scroll) */}
       <header
-        className="glass-nav"
+        className="glass-nav reader-sticky-header"
         style={{
           position: 'sticky',
           top: 0,
           zIndex: 40,
           borderBottom: '1px solid var(--border-color)',
-          minHeight: '58px'
+          minHeight: '56px',
+          transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)',
+          transition: 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease',
+          opacity: isHeaderVisible ? 1 : 0
         }}
       >
         <div

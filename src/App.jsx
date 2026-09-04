@@ -12,6 +12,8 @@ import QuickTOCModal from './components/QuickTOCModal';
 import MedicalDiagramsModal from './components/MedicalDiagramsModal';
 import ScrollToTop from './components/ScrollToTop';
 import Footer from './components/Footer';
+import MobileBottomNav from './components/MobileBottomNav';
+import PWAInstallBanner from './components/PWAInstallBanner';
 import allChaptersData from './data/all_chapters.json';
 import booksData from './data/books.json';
 import { AlertCircle, ArrowLeft, BookOpen, CheckCircle2 } from 'lucide-react';
@@ -402,6 +404,20 @@ export default function App() {
 
       {/* Floating Scroll To Top Button */}
       <ScrollToTop />
+
+      {/* PWA Install Banner */}
+      <PWAInstallBanner />
+
+      {/* Mobile Bottom Navigation Bar (Visible on mobile <= 640px) */}
+      <MobileBottomNav
+        activeView={activeView}
+        onGoHome={handleBackToHome}
+        onOpenTOC={() => setIsQuickTOCOpen(true)}
+        onOpenDiagrams={handleOpenDiagrams}
+        onOpenPlan={() => setIsPlanModalOpen(true)}
+        onOpenSearch={() => handleOpenSearch('')}
+        planCount={planItems.filter((item) => !item.completed).length}
+      />
 
       {/* Floating Magic Link Import Toast Notification */}
       {importToast && (

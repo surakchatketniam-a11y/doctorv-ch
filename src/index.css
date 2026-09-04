@@ -507,6 +507,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
    ======================================================== */
 
 @media (max-width: 640px) {
+  body {
+    padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .mobile-bottom-nav {
+    display: flex !important;
+  }
+
   .nav-subtitle {
     display: none !important;
   }
@@ -534,7 +542,20 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   }
 
   .reader-container {
-    padding: 0 1rem;
+    padding: 0 1.15rem !important;
+  }
+
+  /* Optimized Mobile Reading Typography (แก้ปัญหาเปิดบนมือถืออ่านยาก) */
+  .reader-container p {
+    font-size: 1.125rem !important;
+    line-height: 1.88 !important;
+    margin-bottom: 1.5rem !important;
+  }
+}
+
+@media (min-width: 641px) {
+  .mobile-bottom-nav {
+    display: none !important;
   }
 }
 
