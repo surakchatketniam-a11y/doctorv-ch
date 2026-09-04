@@ -311,7 +311,7 @@ export default function App() {
           </div>
         </main>
       ) : (
-        <main style={{ flex: 1 }}>
+        <main style={{ flex: 1 }} className="home-main-content">
           {/* Dual-Book Hero Showcase & Intent Discovery */}
           <Hero
             onStartReadingBook={handleStartReadingBook}
@@ -405,19 +405,21 @@ export default function App() {
       {/* Floating Scroll To Top Button */}
       <ScrollToTop />
 
-      {/* PWA Install Banner */}
-      <PWAInstallBanner />
+      {/* PWA Install Banner (Visible on Home screen only, not blocking reading) */}
+      {activeView === 'home' && <PWAInstallBanner />}
 
-      {/* Mobile Bottom Navigation Bar (Visible on mobile <= 640px) */}
-      <MobileBottomNav
-        activeView={activeView}
-        onGoHome={handleBackToHome}
-        onOpenTOC={() => setIsQuickTOCOpen(true)}
-        onOpenDiagrams={handleOpenDiagrams}
-        onOpenPlan={() => setIsPlanModalOpen(true)}
-        onOpenSearch={() => handleOpenSearch('')}
-        planCount={planItems.filter((item) => !item.completed).length}
-      />
+      {/* Mobile Bottom Navigation Bar (Visible on mobile Home screen <= 640px) */}
+      {activeView === 'home' && (
+        <MobileBottomNav
+          activeView={activeView}
+          onGoHome={handleBackToHome}
+          onOpenTOC={() => setIsQuickTOCOpen(true)}
+          onOpenDiagrams={handleOpenDiagrams}
+          onOpenPlan={() => setIsPlanModalOpen(true)}
+          onOpenSearch={() => handleOpenSearch('')}
+          planCount={planItems.filter((item) => !item.completed).length}
+        />
+      )}
 
       {/* Floating Magic Link Import Toast Notification */}
       {importToast && (

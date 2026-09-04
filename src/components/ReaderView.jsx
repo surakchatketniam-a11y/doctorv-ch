@@ -362,8 +362,9 @@ export default function ReaderView({
             <span>สารบัญ</span>
           </button>
 
-          {/* Center: Book & Chapter Breadcrumb */}
+          {/* Center: Book & Chapter Breadcrumb (Desktop / Tablet only) */}
           <div
+            className="reader-nav-center"
             style={{
               flex: 1,
               textAlign: 'center',
@@ -378,7 +379,10 @@ export default function ReaderView({
                 color: isBook1 ? 'var(--book1-color)' : 'var(--book2-color)',
                 fontWeight: '700',
                 textTransform: 'uppercase',
-                letterSpacing: '0.04em'
+                letterSpacing: '0.04em',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
               }}
             >
               {chapter.bookTitle} • ตอนที่ {bookIdx + 1}/{bookChapters.length}

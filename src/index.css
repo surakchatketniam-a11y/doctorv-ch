@@ -507,12 +507,17 @@ button:focus-visible, a:focus-visible, input:focus-visible {
    ======================================================== */
 
 @media (max-width: 640px) {
-  body {
-    padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+  .home-main-content {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
   }
 
   .mobile-bottom-nav {
     display: flex !important;
+  }
+
+  /* Hide center breadcrumb in reader view on mobile to prevent squeezed vertical text */
+  .reader-nav-center {
+    display: none !important;
   }
 
   .nav-subtitle {
