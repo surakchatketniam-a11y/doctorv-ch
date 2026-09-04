@@ -24,8 +24,24 @@ export default function QuickTOCModal({
 }) {
   const [activeBook, setActiveBook] = useState('book1'); // 'book1' | 'book2'
   const [tocSearch, setTocSearch] = useState('');
+  const [lastRead, setLastRead] = useState(null);
   const modalRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Load last read chapter when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      try {
+        const saved = localStorage.getItem('dr_v_last_read');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed.chapterId && parsed.title) {
+            setLastRead(parsed);
+          }
+        }
+      } catch {}
+    }
+  }, [isOpen]);
 
   // Escape key & Focus Trap
   useEffect(() => {
@@ -179,6 +195,54 @@ export default function QuickTOCModal({
             <X size={20} />
           </button>
         </div>
+
+        {/* Continue Reading Quick Bar inside Quick TOC */}
+        {lastRead && lastRead.chapterId && (
+          <div
+            style={{
+              marginBottom: '0.85rem',
+              padding: '0.65rem 0.85rem',
+              backgroundColor: lastRead.bookId === 'book2' ? 'rgba(37,99,235,0.08)' : 'rgba(5,150,105,0.08)',
+              border: `1.5px solid ${lastRead.bookId === 'book2' ? 'var(--book2-border)' : 'var(--book1-border)'}`,
+              borderRadius: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '0.6rem',
+              flexShrink: 0
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', minWidth: 0, flex: 1 }}>
+              <BookOpen size={18} style={{ color: lastRead.bookId === 'book2' ? 'var(--book2-color)' : 'var(--book1-color)', flexShrink: 0 }} />
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <div style={{ fontSize: '0.7rem', fontWeight: '700', color: lastRead.bookId === 'book2' ? 'var(--book2-color)' : 'var(--book1-color)' }}>
+                  อ่านต่อจากที่ค้างไว้ ({lastRead.progress || 0}%) • {lastRead.bookId === 'book2' ? 'เล่ม 2: ก่อนสมองพัง' : 'เล่ม 1: ก่อนจะป่วย'}
+                </div>
+                <div style={{ fontSize: '0.825rem', fontWeight: '600', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {lastRead.title}
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => {
+                onClose();
+                onSelectChapter(lastRead.chapterId);
+              }}
+              style={{
+                padding: '0.35rem 0.75rem',
+                fontSize: '0.775rem',
+                minHeight: '32px',
+                borderRadius: '8px',
+                whiteSpace: 'nowrap',
+                flexShrink: 0
+              }}
+            >
+              อ่านต่อทันที ›
+            </button>
+          </div>
+        )}
 
         {/* Book Selector Tabs */}
         <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.75rem', flexShrink: 0 }}>

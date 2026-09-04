@@ -141,6 +141,34 @@ export default function ReaderView({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Save initial last read state immediately upon opening chapter
+  useEffect(() => {
+    try {
+      const existing = localStorage.getItem('dr_v_last_read');
+      let currentProgress = 0;
+      let currentScrollY = 0;
+      if (existing) {
+        const parsed = JSON.parse(existing);
+        if (parsed.chapterId === chapter.id) {
+          currentProgress = parsed.progress || 0;
+          currentScrollY = parsed.scrollY || 0;
+        }
+      }
+      localStorage.setItem(
+        'dr_v_last_read',
+        JSON.stringify({
+          chapterId: chapter.id,
+          title: chapter.title,
+          bookId: chapter.bookId,
+          partTitle: chapter.partTitle || '',
+          progress: currentProgress,
+          scrollY: currentScrollY,
+          timestamp: Date.now()
+        })
+      );
+    } catch {}
+  }, [chapter.id]);
+
   // Track scroll progress & persist to dr_v_last_read (with mobile headroom auto-hide)
   useEffect(() => {
     let timer = null;
@@ -177,7 +205,7 @@ export default function ReaderView({
               })
             );
           } catch {}
-        }, 250);
+        }, 200);
       }
     };
 
@@ -185,6 +213,23 @@ export default function ReaderView({
     return () => {
       window.removeEventListener('scroll', handleScroll);
       if (timer) clearTimeout(timer);
+      // Flush current scroll progress immediately on unmount (e.g. before navigating back to Home)
+      try {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const currentProgress = totalHeight > 0 ? Math.round((window.scrollY / totalHeight) * 100) : 0;
+        localStorage.setItem(
+          'dr_v_last_read',
+          JSON.stringify({
+            chapterId: chapter.id,
+            title: chapter.title,
+            bookId: chapter.bookId,
+            partTitle: chapter.partTitle || '',
+            progress: Math.min(100, Math.max(0, currentProgress)),
+            scrollY: window.scrollY,
+            timestamp: Date.now()
+          })
+        );
+      } catch {}
     };
   }, [chapter.id, chapter.title, chapter.bookId, chapter.partTitle]);
 
