@@ -14,3 +14,17 @@
 .modal-backdrop.ds-home select { font-family: var(--ds-font); color: var(--ds-ink); }
 .modal-backdrop.ds-home input:focus-visible,
 .modal-backdrop.ds-home textarea:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 1px; }
+
+/* Danger fills keep white text in every theme (btn-primary forces on-primary otherwise) */
+.ds-home .btn[style*="--ds-danger-fill"],
+.ds-home [style*="--ds-danger-fill"] { color: #ffffff !important; }
+
+/* Four-tab switcher wraps to 2x2 on narrow screens so no tab is clipped */
+@media (max-width: 520px) {
+  .modal-backdrop.ds-home [role="tablist"] { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* Long header badges can wrap on phones; a 9999px radius would turn them into a blob */
+@media (max-width: 520px) {
+  .modal-backdrop.ds-home .badge-primary { border-radius: 14px; line-height: 1.4; padding: 0.35rem 0.75rem; }
+}
