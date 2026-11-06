@@ -349,16 +349,11 @@ export default function ReaderView({
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)', display: 'flex', flexDirection: 'column' }}>
+    <div className="ds-home" style={{ minHeight: '100vh', backgroundColor: 'var(--ds-canvas)', display: 'flex', flexDirection: 'column' }}>
       {/* Top Reading Progress Bar */}
       <div
         className="reading-progress-bar"
-        style={{
-          width: `${scrollProgress}%`,
-          background: isBook1 
-            ? 'linear-gradient(90deg, #059669, #10b981, #34d399)'
-            : 'linear-gradient(90deg, #2563eb, #3b82f6, #60a5fa)'
-        }}
+        style={{ width: `${scrollProgress}%`, background: 'var(--ds-primary)' }}
       />
 
       {/* Reader Sticky Header (Single Clean Header with Auto-hide on mobile scroll) */}
@@ -421,10 +416,8 @@ export default function ReaderView({
             <div
               style={{
                 fontSize: '0.75rem',
-                color: isBook1 ? 'var(--book1-color)' : 'var(--book2-color)',
-                fontWeight: '700',
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
+                color: 'var(--ds-ink-secondary)',
+                fontWeight: '500',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis'
@@ -506,7 +499,6 @@ export default function ReaderView({
                     right: 0,
                     width: '210px',
                     padding: '0.5rem',
-                    boxShadow: 'var(--card-shadow)',
                     zIndex: 50,
                     display: 'flex',
                     flexDirection: 'column',
@@ -548,8 +540,8 @@ export default function ReaderView({
                     }}
                     style={{ justifyContent: 'flex-start', padding: '0.45rem 0.65rem', fontSize: '0.85rem', gap: '0.6rem' }}
                   >
-                    <Share size={16} />
-                    <span>{copiedLink ? '✓ คัดลอกสำเร็จ!' : 'แชร์ / คัดลอกลิงก์'}</span>
+                    {copiedLink ? <Check size={16} /> : <Share size={16} />}
+                    <span>{copiedLink ? 'คัดลอกสำเร็จ' : 'แชร์ / คัดลอกลิงก์'}</span>
                   </button>
                 </div>
               )}
@@ -577,6 +569,7 @@ export default function ReaderView({
           <header style={{ marginBottom: '2rem', textAlign: 'left' }}>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem', alignItems: 'center' }}>
               <span className={isBook1 ? 'badge-book1 badge' : 'badge-book2 badge'}>
+                <span className="ds-dot" style={{ background: isBook1 ? 'var(--ds-accent-green)' : 'var(--ds-accent-blue)' }} />
                 {isBook1 ? <HeartPulse size={14} /> : <Brain size={14} />}
                 <span>{chapter.bookTitle}</span>
               </span>
@@ -593,7 +586,7 @@ export default function ReaderView({
             <h1
               style={{
                 fontSize: 'clamp(1.85rem, 3.8vw, 2.65rem)',
-                fontWeight: '800',
+                fontWeight: '700',
                 color: 'var(--text-primary)',
                 lineHeight: '1.3',
                 marginBottom: '1rem'
@@ -655,8 +648,7 @@ export default function ReaderView({
                   style={{
                     fontSize: '0.8125rem',
                     padding: '0.45rem 0.85rem',
-                    gap: '0.4rem',
-                    color: 'var(--accent-primary)'
+                    gap: '0.4rem'
                   }}
                 >
                   <ExternalLink size={14} />
@@ -673,7 +665,6 @@ export default function ReaderView({
                 marginBottom: '2.5rem',
                 borderRadius: '16px',
                 overflow: 'hidden',
-                boxShadow: 'var(--card-shadow)',
                 border: '1px solid var(--border-color)',
                 backgroundColor: 'var(--bg-secondary)'
               }}
@@ -718,7 +709,7 @@ export default function ReaderView({
                       style={{
                         fontSize: '1.35rem',
                         fontWeight: '700',
-                        color: isBook1 ? 'var(--book1-color)' : 'var(--book2-color)',
+                        color: 'var(--text-primary)',
                         marginTop: '2.25rem',
                         marginBottom: '0.85rem',
                         lineHeight: '1.4'
@@ -750,11 +741,13 @@ export default function ReaderView({
           </div>
 
           {/* Phase 7 Medical Diagrams (Contextually Embedded) */}
-          {isStrokeChapter && <FastStrokeDiagram />}
-          {isSleepChapter && <GlymphaticSleepDiagram />}
-          {isLifestyleChapter && <LifestylePillarsDiagram />}
-          {isFastAutophagyChapter && <FastAutophagyDiagram />}
-          {isDementiaChapter && <DementiaComparisonDiagram />}
+          <div className="ds-legacy">
+            {isStrokeChapter && <FastStrokeDiagram />}
+            {isSleepChapter && <GlymphaticSleepDiagram />}
+            {isLifestyleChapter && <LifestylePillarsDiagram />}
+            {isFastAutophagyChapter && <FastAutophagyDiagram />}
+            {isDementiaChapter && <DementiaComparisonDiagram />}
+          </div>
 
           {/* Key Takeaways Callout */}
           {chapter.takeaways && chapter.takeaways.length > 0 && (
@@ -798,8 +791,9 @@ export default function ReaderView({
                         justifyContent: 'space-between',
                         gap: '0.75rem',
                         padding: '0.6rem 0.85rem',
-                        backgroundColor: 'rgba(255, 255, 255, 0.4)',
-                        borderRadius: '10px'
+                        backgroundColor: 'var(--ds-canvas)',
+                        border: '1px solid var(--ds-hairline)',
+                        borderRadius: '12px'
                       }}
                     >
                       <span style={{ fontSize: '0.9rem', lineHeight: '1.5', flex: 1 }}>{a}</span>
@@ -810,21 +804,23 @@ export default function ReaderView({
                         style={{
                           padding: '0.3rem 0.75rem',
                           fontSize: '0.775rem',
-                          flexShrink: 0,
-                          backgroundColor: isInPlan ? undefined : 'var(--book1-color)'
+                          flexShrink: 0
                         }}
                       >
                         {isInPlan ? (
-                          <span style={{ color: 'var(--book1-color)', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                          <span style={{ color: 'var(--ds-status-success)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                             <Check size={13} />
                             <span>อยู่ในแผน 7 วันแล้ว</span>
                           </span>
                         ) : isJustAdded ? (
-                          <span>✓ เพิ่มแล้ว!</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                            <Check size={13} />
+                            <span>เพิ่มแล้ว</span>
+                          </span>
                         ) : (
                           <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                             <Calendar size={13} />
-                            <span>+ ใส่ในแผน 7 วัน</span>
+                            <span>ใส่ในแผน 7 วัน</span>
                           </span>
                         )}
                       </button>
@@ -847,7 +843,7 @@ export default function ReaderView({
             }}
           >
             <div style={{ fontSize: '1.05rem', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '0.35rem' }}>
-              {isRead ? '🎉 คุณได้บันทึกการอ่านจบบทนี้แล้ว' : 'อ่านบทความนี้จบแล้วหรือยัง?'}
+              {isRead ? 'คุณได้บันทึกการอ่านจบบทนี้แล้ว' : 'อ่านบทความนี้จบแล้วหรือยัง?'}
             </div>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
               กดปุ่มด้านล่างเพื่อบันทึกสถิติการอ่าน และร่วมเฉลิมฉลองการดูแลสุขภาพของตนเอง
@@ -856,15 +852,10 @@ export default function ReaderView({
               type="button"
               className="btn btn-primary"
               onClick={handleExplicitFinish}
-              style={{
-                backgroundColor: isBook1 ? 'var(--book1-color)' : 'var(--book2-color)',
-                fontSize: '0.95rem',
-                padding: '0.65rem 1.5rem',
-                boxShadow: 'var(--card-shadow)'
-              }}
+              style={{ fontSize: '0.95rem', padding: '0.65rem 1.5rem' }}
             >
               <PartyPopper size={18} />
-              <span>{isRead ? 'กดเฉลิมฉลองอีกครั้ง 🎊' : 'ฉันอ่านบทความนี้จบแล้ว ✓'}</span>
+              <span>{isRead ? 'กดเฉลิมฉลองอีกครั้ง' : 'ฉันอ่านบทความนี้จบแล้ว'}</span>
             </button>
           </div>
 
@@ -884,7 +875,7 @@ export default function ReaderView({
             }}
           >
             <div style={{ fontWeight: '700', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <ShieldCheck size={16} style={{ color: 'var(--book1-color)' }} />
+              <ShieldCheck size={16} style={{ color: 'var(--ds-status-success)' }} />
               <span>มาตรฐานความถูกต้องและการตรวจทานทางการแพทย์ (Evidence Governance)</span>
             </div>
             <div>
@@ -969,14 +960,14 @@ export default function ReaderView({
                 }}
               >
                 <div>
-                  <div style={{ fontSize: '0.75rem', color: isBook1 ? 'var(--book1-color)' : 'var(--book2-color)', fontWeight: '600' }}>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--ds-ink-secondary)', fontWeight: '600' }}>
                     บทถัดไป
                   </div>
                   <div style={{ fontWeight: '700', fontSize: '0.95rem', color: 'var(--text-primary)', marginTop: '0.2rem' }}>
                     {nextChapter.title}
                   </div>
                 </div>
-                <ChevronRight size={24} style={{ color: isBook1 ? 'var(--book1-color)' : 'var(--book2-color)', flexShrink: 0 }} />
+                <ChevronRight size={24} style={{ color: 'var(--ds-ink)', flexShrink: 0 }} />
               </button>
             ) : <div />}
           </div>
@@ -1005,8 +996,7 @@ export default function ReaderView({
             backgroundColor: 'var(--bg-glass)',
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
-            border: '1px solid var(--border-color)',
-            boxShadow: '0 12px 30px -4px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.05)'
+            border: '1px solid var(--border-color)'
           }}
         >
           {/* Progress % / Time left */}
@@ -1022,7 +1012,7 @@ export default function ReaderView({
               borderRight: '1px solid var(--border-color)'
             }}
           >
-            <Clock size={13} style={{ color: isBook1 ? 'var(--book1-color)' : 'var(--book2-color)' }} />
+            <Clock size={13} />
             <span>{Math.round(scrollProgress)}%</span>
             <span className="nav-desktop-only-btn" style={{ fontSize: '0.725rem', color: 'var(--text-muted)' }}>
               (เหลือ ~{Math.max(1, Math.ceil(parseInt(chapter.readingTime || '3') * (1 - scrollProgress / 100)))} น.)
@@ -1219,7 +1209,7 @@ export default function ReaderView({
                       </div>
 
                       {isItemRead && (
-                        <CheckCircle2 size={15} style={{ color: 'var(--book1-color)', flexShrink: 0 }} />
+                        <CheckCircle2 size={15} style={{ color: 'var(--ds-status-success)', flexShrink: 0 }} />
                       )}
                     </button>
                   );

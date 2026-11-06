@@ -8,49 +8,49 @@ main.ds-home { background-color: var(--ds-canvas); }
 .ds-home svg.lucide { stroke-width: var(--ds-icon-stroke); flex-shrink: 0; }
 
 /* Flat surfaces: hairlines instead of shadows */
-.ds-home .card,
-.ds-home .btn-card,
-.ds-home .btn-primary,
+.ds-home .card:not(.ds-legacy *),
+.ds-home .btn-card:not(.ds-legacy *),
+.ds-home .btn-primary:not(.ds-legacy *),
 .ds-home .continue-reading-card {
   box-shadow: none !important;
 }
-.ds-home .btn-card:hover,
+.ds-home .btn-card:hover:not(.ds-legacy *),
 .ds-home .continue-reading-card:hover { transform: none; box-shadow: none; }
 
 /* Buttons: pill, one filled primary */
-.ds-home .btn {
+.ds-home .btn:not(.ds-legacy *) {
   border-radius: var(--ds-radius-button);
   padding: var(--ds-button-padding);
   font-weight: 500;
 }
-.ds-home .btn-primary {
+.ds-home .btn-primary:not(.ds-legacy *) {
   background-color: var(--ds-primary);
   color: var(--ds-on-primary) !important;
 }
-.ds-home .btn-primary:hover { background-color: var(--ds-ink-secondary); transform: none; }
-.ds-home .btn-secondary {
+.ds-home .btn-primary:hover:not(.ds-legacy *) { background-color: var(--ds-ink-secondary); transform: none; }
+.ds-home .btn-secondary:not(.ds-legacy *) {
   background-color: var(--ds-canvas);
   border: 1px solid var(--ds-hairline);
   color: var(--ds-ink);
 }
-.ds-home .btn-secondary:hover { background-color: var(--ds-surface); border-color: var(--ds-ink); }
-.ds-home .btn-ghost:hover { background-color: var(--ds-surface); }
+.ds-home .btn-secondary:hover:not(.ds-legacy *) { background-color: var(--ds-surface); border-color: var(--ds-ink); }
+.ds-home .btn-ghost:hover:not(.ds-legacy *) { background-color: var(--ds-surface); }
 
 /* Chips and tabs */
-.ds-home .badge {
+.ds-home .badge:not(.ds-legacy *) {
   border-radius: var(--ds-radius-button);
   background-color: var(--ds-canvas);
   border: 1px solid var(--ds-hairline);
   color: var(--ds-ink);
   font-weight: 500;
 }
-.ds-home .badge-primary {
+.ds-home .badge-primary:not(.ds-legacy *) {
   background-color: var(--ds-primary);
   color: var(--ds-on-primary);
   border-color: var(--ds-primary);
 }
-.ds-home .badge-book1,
-.ds-home .badge-book2 {
+.ds-home .badge-book1:not(.ds-legacy *),
+.ds-home .badge-book2:not(.ds-legacy *) {
   background-color: var(--ds-canvas);
   color: var(--ds-ink);
   border-color: var(--ds-hairline);
@@ -256,3 +256,21 @@ main.ds-home { background-color: var(--ds-canvas); }
   .ds-book-top { gap: 16px; }
   .ds-book-cover { width: 80px; min-width: 80px; }
 }
+
+/* Reader (article) */
+.ds-home .reader-container { font-family: var(--ds-font); }
+.ds-home .callout-quote,
+.ds-home .callout-takeaway,
+.ds-home .callout-action {
+  background-color: var(--ds-surface);
+  border: 1px solid var(--ds-hairline);
+  border-left: 3px solid var(--ds-ink);
+  border-radius: var(--ds-radius-card);
+  box-shadow: none;
+}
+.ds-home .callout-quote { font-style: normal; }
+.ds-home .callout-action { border-left-color: var(--ds-ink-secondary); background-color: var(--ds-surface-tint); }
+.ds-home .modal-content,
+.ds-home .floating-reader-bar { box-shadow: none !important; }
+.ds-home .modal-content { border-radius: var(--ds-radius-card); }
+.ds-home .reading-progress-bar { height: 3px; }

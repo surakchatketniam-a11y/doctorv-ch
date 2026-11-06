@@ -52,6 +52,17 @@
   --card-shadow-hover: none;
   --tag-bg: var(--ds-canvas);
   --tag-text: var(--ds-ink);
+  --quote-bg: var(--ds-surface);
+  --quote-border: var(--ds-ink);
+  --takeaway-bg: var(--ds-surface);
+  --takeaway-border: var(--ds-ink);
+  --takeaway-text: var(--ds-ink);
+  --action-bg: var(--ds-surface-tint);
+  --action-border: var(--ds-ink-secondary);
+  --action-text: var(--ds-ink);
+  --danger-bg: var(--ds-surface);
+  --danger-border: var(--ds-status-error);
+  --danger-text: var(--ds-status-error);
   --book1-color: var(--ds-ink);
   --book2-color: var(--ds-ink);
   --book1-light: var(--ds-canvas);
