@@ -30,7 +30,7 @@ export default function ScrollToTop() {
   return (
     <button
       type="button"
-      className="scroll-to-top-btn"
+      className="scroll-to-top-btn ds-home"
       onClick={scrollToTop}
       aria-label="เลื่อนกลับสู่ด้านบนสุด"
       title="กลับสู่ด้านบนสุด"
@@ -42,7 +42,7 @@ export default function ScrollToTop() {
         height: '48px',
         borderRadius: '50%',
         backgroundColor: 'var(--accent-primary)',
-        color: '#ffffff',
+        color: 'var(--ds-on-primary)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

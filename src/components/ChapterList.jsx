@@ -109,6 +109,7 @@ export default function ChapterList({
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('default'); // 'default' | 'shortest' | 'action'
   const [isExpandedAll, setIsExpandedAll] = useState(false);
+  const [showPartFilter, setShowPartFilter] = useState(false);
 
   // Sync with prop if provided
   const currentBook = selectedBookFilter !== undefined ? selectedBookFilter : selectedBook;
@@ -360,18 +361,16 @@ export default function ChapterList({
             </div>
           </div>
 
-          {/* Book Switcher Tabs & Quick Sort Controls */}
+          {/* Book tabs + compact filter / sort controls */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              gap: '1rem',
-              flexWrap: 'wrap',
-              marginBottom: '1rem'
+              gap: '0.75rem',
+              flexWrap: 'wrap'
             }}
           >
-            {/* Book Tabs */}
             <div className="book-tabs-container">
               <button
                 type="button"
@@ -398,104 +397,86 @@ export default function ChapterList({
               </button>
             </div>
 
-            {/* Quick Sort Options Pills */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '0.775rem', color: 'var(--text-muted)', marginRight: '0.2rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                <ArrowUpDown size={13} />
-                <span>เรียงตาม:</span>
-              </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+              {availableParts.length > 0 && (
+                <button
+                  type="button"
+                  className={`badge ${selectedPart !== 'all' ? 'badge-primary' : ''}`}
+                  onClick={() => setShowPartFilter((v) => !v)}
+                  aria-expanded={showPartFilter}
+                  aria-controls="part-filter-panel"
+                  style={{ cursor: 'pointer', padding: '0.4rem 0.85rem', fontSize: '0.875rem' }}
+                >
+                  <Filter size={14} />
+                  <span>
+                    {selectedPart === 'all'
+                      ? 'กรองตามภาค'
+                      : availableParts.find((p) => p.key === selectedPart)?.shortTitle || 'กรองตามภาค'}
+                  </span>
+                  <ChevronDown
+                    size={14}
+                    style={{ transform: showPartFilter ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s ease' }}
+                  />
+                </button>
+              )}
 
-              <button
-                type="button"
-                className={`badge ${sortBy === 'default' ? 'badge-primary' : ''}`}
-                onClick={() => setSortBy('default')}
-                style={{ cursor: 'pointer', padding: '0.3rem 0.65rem', fontSize: '0.775rem', borderRadius: '8px' }}
+              <label
+                className="badge"
+                style={{ cursor: 'pointer', padding: '0.4rem 0.85rem', fontSize: '0.875rem', gap: '0.4rem' }}
               >
-                <BookOpen size={13} />
-                <span>ตามเล่ม</span>
-              </button>
-
-              <button
-                type="button"
-                className={`badge ${sortBy === 'shortest' ? 'badge-primary' : ''}`}
-                onClick={() => setSortBy('shortest')}
-                style={{ cursor: 'pointer', padding: '0.3rem 0.65rem', fontSize: '0.775rem', borderRadius: '8px' }}
-                title="เรียงจากบทความที่ใช้เวลาอ่านสั้นที่สุด"
-              >
-                <Zap size={13} />
-                <span>อ่านสั้น</span>
-              </button>
-
-              <button
-                type="button"
-                className={`badge ${sortBy === 'action' ? 'badge-primary' : ''}`}
-                onClick={() => setSortBy('action')}
-                style={{ cursor: 'pointer', padding: '0.3rem 0.65rem', fontSize: '0.775rem', borderRadius: '8px' }}
-                title="เรียงจากบทความที่มีข้อปฏิบัติมากที่สุด"
-              >
-                <Lightbulb size={13} />
-                <span>มีข้อปฏิบัติ</span>
-              </button>
+                <ArrowUpDown size={14} />
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  aria-label="เรียงบทความตาม"
+                  style={{
+                    border: 'none',
+                    background: 'transparent',
+                    color: 'inherit',
+                    font: 'inherit',
+                    cursor: 'pointer',
+                    outline: 'none'
+                  }}
+                >
+                  <option value="default">ตามเล่ม</option>
+                  <option value="shortest">อ่านสั้น</option>
+                  <option value="action">มีข้อปฏิบัติ</option>
+                </select>
+              </label>
             </div>
           </div>
 
-          {/* Part Filter Chips Horizontal Scroll Container with Scroll Fade & Counts */}
-          {availableParts.length > 0 && (
-            <div style={{ position: 'relative', marginTop: '0.5rem' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.45rem',
-                  overflowX: 'auto',
-                  paddingBottom: '0.5rem',
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none'
-                }}
+          {/* Part filter chips: collapsed by default */}
+          {showPartFilter && availableParts.length > 0 && (
+            <div
+              id="part-filter-panel"
+              style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem', marginTop: '0.85rem' }}
+            >
+              <button
+                type="button"
+                className={`badge ${selectedPart === 'all' ? 'badge-primary' : ''}`}
+                onClick={() => setSelectedPart('all')}
+                style={{ cursor: 'pointer', padding: '0.4rem 0.85rem', fontSize: '0.8125rem' }}
               >
-                <button
-                  type="button"
-                  className={`badge ${selectedPart === 'all' ? 'badge-primary' : ''}`}
-                  onClick={() => setSelectedPart('all')}
-                  style={{
-                    cursor: 'pointer',
-                    padding: '0.4rem 0.85rem',
-                    fontSize: '0.8125rem',
-                    fontWeight: selectedPart === 'all' ? '700' : '500',
-                    flexShrink: 0,
-                    borderRadius: '10px'
-                  }}
-                >
-                  ทั้งหมด ({activeBookTotalCount})
-                </button>
+                ทั้งหมด ({activeBookTotalCount})
+              </button>
 
-                {availableParts.map((p) => {
-                  const isSelected = selectedPart === p.key;
-
-                  return (
-                    <button
-                      key={p.key}
-                      type="button"
-                      className={`badge ${isSelected ? 'badge-primary' : ''}`}
-                      onClick={() => setSelectedPart(isSelected ? 'all' : p.key)}
-                      title={p.title}
-                      style={{
-                        cursor: 'pointer',
-                        padding: '0.4rem 0.85rem',
-                        fontSize: '0.8125rem',
-                        fontWeight: isSelected ? '700' : '500',
-                        flexShrink: 0,
-                        borderRadius: '10px'
-                      }}
-                    >
-                      <span>{p.shortTitle}</span>
-                      <span style={{ opacity: 0.65, fontSize: '0.75rem', marginLeft: '0.2rem' }}>
-                        ({p.count})
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+              {availableParts.filter((p) => p.count > 0).map((p) => {
+                const isSelected = selectedPart === p.key;
+                return (
+                  <button
+                    key={p.key}
+                    type="button"
+                    className={`badge ${isSelected ? 'badge-primary' : ''}`}
+                    onClick={() => setSelectedPart(isSelected ? 'all' : p.key)}
+                    title={p.title}
+                    style={{ cursor: 'pointer', padding: '0.4rem 0.85rem', fontSize: '0.8125rem' }}
+                  >
+                    <span>{p.shortTitle}</span>
+                    <span style={{ opacity: 0.65, fontSize: '0.75rem' }}>({p.count})</span>
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>

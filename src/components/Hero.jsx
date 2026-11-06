@@ -4,7 +4,6 @@ import {
   HeartPulse,
   Brain,
   ChevronRight,
-  Activity,
   ShieldAlert,
   Search,
   X,
@@ -12,13 +11,6 @@ import {
 } from 'lucide-react';
 import booksData from '../data/books.json';
 import allChaptersData from '../data/all_chapters.json';
-
-const TOPIC_CHIPS = [
-  { label: 'การนอนหลับ', query: 'การนอนหลับ' },
-  { label: 'ไมเกรน', query: 'ไมเกรน' },
-  { label: 'สมองเสื่อม', query: 'สมองเสื่อม' },
-  { label: 'อาหารเป็นยา', query: 'อาหารเป็นยา' }
-];
 
 const BOOK_ACCENT = { book1: 'var(--ds-accent-green)', book2: 'var(--ds-accent-blue)' };
 
@@ -242,26 +234,6 @@ export default function Hero({
               <ShieldAlert size={16} />
               <span>สงสัยอาการ Stroke? เช็ก FAST</span>
             </button>
-            <button type="button" className="ds-quick-link" onClick={() => onOpenTools('lifestyle')}>
-              <Activity size={16} />
-              <span>ประเมินสุขภาพ 2 นาที</span>
-            </button>
-          </div>
-          <div className="ds-quick-links" style={{ marginTop: 8 }}>
-            {TOPIC_CHIPS.map((t) => (
-              <button
-                key={t.label}
-                type="button"
-                className="ds-quick-link"
-                style={{ color: 'var(--ds-ink-secondary)', padding: '4px 12px' }}
-                onClick={() => {
-                  setSearchQuery(t.query);
-                  setIsDropdownOpen(true);
-                }}
-              >
-                {t.label}
-              </button>
-            ))}
           </div>
         </div>
 
