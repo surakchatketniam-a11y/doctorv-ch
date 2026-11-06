@@ -116,10 +116,10 @@ export default function MedicalDiagramsModal({ isOpen, onClose, initialDiagram =
           <div>
             <div className="badge badge-primary" style={{ marginBottom: '0.35rem' }}>
               <Layers size={14} />
-              <span>Interactive Clinical Diagrams • แผนผังการแพทย์อินเตอร์แอคทีฟ</span>
+              <span><span className="hide-on-phone">Interactive Clinical Diagrams • </span>แผนผังการแพทย์อินเตอร์แอคทีฟ</span>
             </div>
             <h2 id="diagrams-modal-title" style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--text-primary)', margin: 0 }}>
-              คลังแผนผังทางการแพทย์ & อินโฟกราฟิก (Medical Diagrams Hub)
+              คลังแผนผังทางการแพทย์ & อินโฟกราฟิก<span className="hide-on-phone"> (Medical Diagrams Hub)</span>
             </h2>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
               รวบรวมแผนผังกลไกทางสรีรวิทยาและโรคสมองที่เข้าใจง่าย ตามหลักฐานการแพทย์โดย นพ.วีระพันธ์ สุวรรณนามัย

@@ -28,3 +28,7 @@
 @media (max-width: 520px) {
   .modal-backdrop.ds-home .badge-primary { border-radius: 14px; line-height: 1.4; padding: 0.35rem 0.75rem; }
 }
+
+@media (max-width: 520px) {
+  .modal-backdrop.ds-home .hide-on-phone { display: none; }
+}
