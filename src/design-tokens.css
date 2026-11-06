@@ -1,0 +1,85 @@
+/* Design tokens for the home page (see /DESIGN.md). Scoped to .ds-home so reader and modals are untouched. */
+.ds-home {
+  --ds-canvas: #ffffff;
+  --ds-ink: #111111;
+  --ds-ink-secondary: #5b6270;
+  --ds-primary: #111111;
+  --ds-on-primary: #ffffff;
+  --ds-surface: #f5f5f5;
+  --ds-surface-tint: #f8f9fa;
+  --ds-hairline: #e5e7eb;
+  --ds-band-dark: #1a1a1a;
+  --ds-accent-blue: #3b82f6;
+  --ds-accent-green: #34d399;
+  --ds-status-error: #c93939;
+  --ds-status-success: #0b7e58;
+
+  --ds-font: Inter, 'Anuphan', 'Noto Sans Thai', system-ui, sans-serif;
+  --ds-text-display: clamp(2rem, 5vw, 3rem);
+  --ds-text-h2: 1.75rem;
+  --ds-text-h3: 1.25rem;
+  --ds-text-body: 1rem;
+  --ds-text-caption: 0.875rem;
+
+  --ds-radius-button: 9999px;
+  --ds-radius-card: 18px;
+  --ds-radius-input: 9999px;
+  --ds-space-section: 64px;
+  --ds-space-card: 24px;
+  --ds-button-padding: 11px 22px;
+  --ds-icon-size: 18px;
+  --ds-icon-stroke: 1.75;
+
+  /* Re-map legacy variables so existing home components pick up the new look */
+  --font-heading: var(--ds-font);
+  --font-body: var(--ds-font);
+  --bg-primary: var(--ds-canvas);
+  --bg-secondary: var(--ds-canvas);
+  --bg-card: var(--ds-surface);
+  --bg-tertiary: var(--ds-surface);
+  --bg-glass: color-mix(in srgb, var(--ds-canvas) 92%, transparent);
+  --text-primary: var(--ds-ink);
+  --text-secondary: var(--ds-ink-secondary);
+  --text-muted: var(--ds-ink-secondary);
+  --border-color: var(--ds-hairline);
+  --border-light: var(--ds-hairline);
+  --accent-primary: var(--ds-primary);
+  --accent-hover: var(--ds-ink-secondary);
+  --accent-dark: var(--ds-ink);
+  --accent-light: var(--ds-surface);
+  --accent-glow: transparent;
+  --card-shadow: none;
+  --card-shadow-hover: none;
+  --tag-bg: var(--ds-canvas);
+  --tag-text: var(--ds-ink);
+  --book1-color: var(--ds-ink);
+  --book2-color: var(--ds-ink);
+  --book1-light: var(--ds-canvas);
+  --book2-light: var(--ds-canvas);
+  --book1-border: var(--ds-hairline);
+  --book2-border: var(--ds-hairline);
+}
+
+[data-theme="dark"] .ds-home {
+  --ds-canvas: #111111;
+  --ds-ink: #f5f5f5;
+  --ds-ink-secondary: #a3a8b3;
+  --ds-primary: #f5f5f5;
+  --ds-on-primary: #111111;
+  --ds-surface: #1a1a1a;
+  --ds-surface-tint: #161616;
+  --ds-hairline: #2a2a2a;
+  --ds-status-error: #f87171;
+  --ds-status-success: #34d399;
+}
+
+[data-theme="sepia"] .ds-home {
+  --ds-canvas: #fdfaf2;
+  --ds-ink: #3d3124;
+  --ds-ink-secondary: #6b5a46;
+  --ds-primary: #3d3124;
+  --ds-on-primary: #fdfaf2;
+  --ds-surface: #f5eedb;
+  --ds-surface-tint: #f8f2e2;
+  --ds-hairline: #e3d5be;
+}

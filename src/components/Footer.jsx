@@ -6,6 +6,7 @@ import authorData from '../data/author.json';
 export default function Footer({ onOpenAuthor, onOpenTools, onSelectBook }) {
   return (
     <footer
+      className="ds-home"
       style={{
         backgroundColor: 'var(--bg-secondary)',
         borderTop: '1px solid var(--border-color)',

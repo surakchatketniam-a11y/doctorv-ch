@@ -35,7 +35,7 @@ export default function Navbar({
   };
 
   return (
-    <header className="glass-nav">
+    <header className="glass-nav ds-home">
       <div
         className="container"
         style={{
@@ -128,20 +128,9 @@ export default function Navbar({
 
           <button
             className="btn btn-ghost nav-btn-labeled nav-desktop-only"
-            onClick={onOpenSearch}
-            title="ค้นหาบทความข้ามทั้ง 2 เล่ม (Search)"
-            aria-label="ค้นหาบทความในคลังความรู้สุขภาพ"
-          >
-            <Search size={18} />
-            <span className="nav-btn-text">ค้นหา</span>
-          </button>
-
-          <button
-            className="btn btn-ghost nav-btn-labeled nav-desktop-only"
             onClick={() => onOpenDiagrams && onOpenDiagrams('fast')}
             title="คลังแผนผังทางการแพทย์ & อินโฟกราฟิก (Medical Diagrams Hub)"
             aria-label="คลังแผนผังทางการแพทย์"
-            style={{ color: 'var(--book2-color)' }}
           >
             <Layers size={18} />
             <span className="nav-btn-text">แผนผัง</span>
@@ -152,7 +141,6 @@ export default function Navbar({
             onClick={() => onOpenTools('lifestyle')}
             title="เครื่องมือประเมินสุขภาพ (FAST Test / เช็กความเสี่ยง NCDs / สมอง / การนอน)"
             aria-label="เครื่องมือประเมินสุขภาพ 4 หมวด"
-            style={{ color: 'var(--accent-primary)' }}
           >
             <Activity size={18} />
             <span className="nav-btn-text">ประเมินสุขภาพ</span>
@@ -163,7 +151,7 @@ export default function Navbar({
             onClick={onOpenPlan}
             title={`แผนสุขภาพ 7 วันของฉัน (${planCount} เป้าหมาย)`}
             aria-label="แผนสุขภาพ 7 วันของฉัน"
-            style={{ position: 'relative', color: planCount > 0 ? 'var(--book1-color)' : undefined }}
+            style={{ position: 'relative' }}
           >
             <Calendar size={18} />
             <span className="nav-btn-text">แผน 7 วัน</span>
@@ -171,8 +159,8 @@ export default function Navbar({
               <span
                 style={{
                   position: 'relative',
-                  backgroundColor: 'var(--book1-color)',
-                  color: '#ffffff',
+                  backgroundColor: 'var(--ds-primary)',
+                  color: 'var(--ds-on-primary)',
                   fontSize: '0.65rem',
                   fontWeight: '800',
                   minWidth: '17px',
@@ -188,6 +176,15 @@ export default function Navbar({
                 {planCount}
               </span>
             )}
+          </button>
+
+          <button
+            className="btn btn-ghost btn-icon nav-desktop-only"
+            onClick={onOpenSearch}
+            title="ค้นหาบทความข้ามทั้ง 2 เล่ม"
+            aria-label="ค้นหาบทความในคลังความรู้สุขภาพ"
+          >
+            <Search size={18} />
           </button>
 
           <button
@@ -213,16 +210,6 @@ export default function Navbar({
             )}
           </button>
 
-          <button
-            className="btn btn-ghost nav-btn-labeled nav-desktop-only"
-            onClick={onOpenAuthor}
-            title="ประวัติผู้เขียนและช่องทางติดตาม (นพ.วีระพันธ์ สุวรรณนามัย)"
-            aria-label="ประวัติผู้เขียน นพ.วีระพันธ์ สุวรรณนามัย"
-          >
-            <User size={18} />
-            <span className="nav-btn-text">หมอวี</span>
-          </button>
-
           <div
             className="nav-desktop-only"
             style={{
@@ -238,7 +225,6 @@ export default function Navbar({
             onClick={toggleTheme}
             aria-label={`เปลี่ยนธีมแสดงผล (ปัจจุบัน: โหมด${getThemeLabel()})`}
             title={`ธีม: ${getThemeLabel()} (คลิกเพื่อเปลี่ยน)`}
-            style={{ color: 'var(--accent-primary)' }}
           >
             {getThemeIcon()}
           </button>

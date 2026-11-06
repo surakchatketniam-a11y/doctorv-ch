@@ -311,7 +311,7 @@ export default function App() {
           </div>
         </main>
       ) : (
-        <main style={{ flex: 1 }} className="home-main-content">
+        <main style={{ flex: 1 }} className="home-main-content ds-home">
           {/* Dual-Book Hero Showcase & Intent Discovery */}
           <Hero
             onStartReadingBook={handleStartReadingBook}

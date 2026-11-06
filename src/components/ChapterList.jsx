@@ -29,7 +29,8 @@ import {
   Stethoscope,
   ArrowUpDown,
   Zap,
-  Flame
+  Flame,
+  Lightbulb
 } from 'lucide-react';
 import booksData from '../data/books.json';
 import allChaptersData from '../data/all_chapters.json';
@@ -410,7 +411,8 @@ export default function ChapterList({
                 onClick={() => setSortBy('default')}
                 style={{ cursor: 'pointer', padding: '0.3rem 0.65rem', fontSize: '0.775rem', borderRadius: '8px' }}
               >
-                📖 ตามเล่ม
+                <BookOpen size={13} />
+                <span>ตามเล่ม</span>
               </button>
 
               <button
@@ -420,7 +422,8 @@ export default function ChapterList({
                 style={{ cursor: 'pointer', padding: '0.3rem 0.65rem', fontSize: '0.775rem', borderRadius: '8px' }}
                 title="เรียงจากบทความที่ใช้เวลาอ่านสั้นที่สุด"
               >
-                ⚡ อ่านสั้น
+                <Zap size={13} />
+                <span>อ่านสั้น</span>
               </button>
 
               <button
@@ -430,7 +433,8 @@ export default function ChapterList({
                 style={{ cursor: 'pointer', padding: '0.3rem 0.65rem', fontSize: '0.775rem', borderRadius: '8px' }}
                 title="เรียงจากบทความที่มีข้อปฏิบัติมากที่สุด"
               >
-                💡 มีข้อปฏิบัติ
+                <Lightbulb size={13} />
+                <span>มีข้อปฏิบัติ</span>
               </button>
             </div>
           </div>
@@ -611,14 +615,10 @@ export default function ChapterList({
                               transition: 'all 0.2s ease'
                             }}
                             onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
-                              e.currentTarget.style.transform = 'translateY(-2px)';
-                              e.currentTarget.style.boxShadow = 'var(--card-shadow)';
+                              e.currentTarget.style.borderColor = 'var(--text-primary)';
                             }}
                             onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)';
-                              e.currentTarget.style.transform = 'translateY(0)';
-                              e.currentTarget.style.boxShadow = 'none';
+                              e.currentTarget.style.borderColor = 'var(--border-color)';
                             }}
                           >
                             <div>
@@ -739,8 +739,9 @@ export default function ChapterList({
                               </span>
 
                               {chap.actionItems && chap.actionItems.length > 0 && (
-                                <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
-                                  💡 {chap.actionItems.length} ข้อปฏิบัติ
+                                <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                                  <Lightbulb size={13} />
+                                  <span>{chap.actionItems.length} ข้อปฏิบัติ</span>
                                 </span>
                               )}
                             </div>

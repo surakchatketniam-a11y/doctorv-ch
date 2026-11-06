@@ -12,7 +12,7 @@ export default function MobileBottomNav({
 }) {
   return (
     <nav
-      className="mobile-bottom-nav"
+      className="mobile-bottom-nav ds-home"
       aria-label="เมนูหลักบนมือถือ"
       style={{
         position: 'fixed',
