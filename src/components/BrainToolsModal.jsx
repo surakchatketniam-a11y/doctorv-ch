@@ -54,7 +54,7 @@ export default function BrainToolsModal({ isOpen, onClose }) {
 
   return (
     <div
-      className="modal-backdrop"
+      className="modal-backdrop ds-home"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -277,7 +277,7 @@ export default function BrainToolsModal({ isOpen, onClose }) {
                 <a
                   href="tel:1669"
                   className="btn"
-                  style={{ backgroundColor: 'var(--danger-border)', color: '#ffffff', fontWeight: '700', padding: '0.6rem 1.25rem' }}
+                  style={{ backgroundColor: 'var(--ds-danger-fill)', color: '#ffffff', fontWeight: '700', padding: '0.6rem 1.25rem' }}
                 >
                   <PhoneCall size={18} />
                   <span>โทรเรียกรถฉุกเฉิน 1669</span>
@@ -355,8 +355,8 @@ export default function BrainToolsModal({ isOpen, onClose }) {
               </div>
               <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
                 {countDementiaYes >= 2
-                  ? '⚠️ มีสัญญาณที่กระทบชีวิตประจำวัน แนะนำให้พาไปพบแพทย์เฉพาะทางระบบประสาทเพื่อตรวจคัดกรองสาเหตุอย่างละเอียด (หลายสาเหตุ เช่น ไทรอยด์ต่ำ หรือขาดวิตามิน B12 สามารถรักษาให้หายได้)'
-                  : '✅ ยังไม่พบสัญญาณอันตรายของภาวะสมองเสื่อม แนะนำให้ดูแลสมองด้วยการเรียนรู้สิ่งใหม่ ออกกำลังกาย และนอนหลับให้เพียงพอ'}
+                  ? 'มีสัญญาณที่กระทบชีวิตประจำวัน แนะนำให้พาไปพบแพทย์เฉพาะทางระบบประสาทเพื่อตรวจคัดกรองสาเหตุอย่างละเอียด (หลายสาเหตุ เช่น ไทรอยด์ต่ำ หรือขาดวิตามิน B12 สามารถรักษาให้หายได้)'
+                  : 'ยังไม่พบสัญญาณอันตรายของภาวะสมองเสื่อม แนะนำให้ดูแลสมองด้วยการเรียนรู้สิ่งใหม่ ออกกำลังกาย และนอนหลับให้เพียงพอ'}
               </p>
             </div>
           </div>
@@ -414,8 +414,8 @@ export default function BrainToolsModal({ isOpen, onClose }) {
               </div>
               <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
                 {countSleepYes >= 4
-                  ? '🌟 ยอดเยี่ยมมาก! คุณมีพฤติกรรมการนอนที่ช่วยปกป้องเซลล์สมองและลดความเสี่ยงสมองเสื่อมได้เป็นอย่างดี'
-                  : '💡 มีบางข้อที่สามารถปรับปรุงได้ ลองปรับเวลาเข้านอน งดหน้าจอก่อนนอน และลดคาเฟอีนเพื่อช่วยให้สมองได้รับการชะล้างสารพิษเต็มที่'}
+                  ? 'ยอดเยี่ยมมาก! คุณมีพฤติกรรมการนอนที่ช่วยปกป้องเซลล์สมองและลดความเสี่ยงสมองเสื่อมได้เป็นอย่างดี'
+                  : 'มีบางข้อที่สามารถปรับปรุงได้ ลองปรับเวลาเข้านอน งดหน้าจอก่อนนอน และลดคาเฟอีนเพื่อช่วยให้สมองได้รับการชะล้างสารพิษเต็มที่'}
               </p>
             </div>
           </div>

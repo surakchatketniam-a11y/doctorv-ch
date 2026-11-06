@@ -1,0 +1,16 @@
+/* Modal overrides. Modal roots carry .ds-home, so tokens from design-tokens.css apply. */
+.modal-backdrop.ds-home { background-color: rgba(17, 17, 17, 0.55); backdrop-filter: none; -webkit-backdrop-filter: none; }
+.modal-backdrop.ds-home .modal-content {
+  background-color: var(--ds-canvas);
+  border: 1px solid var(--ds-hairline);
+  border-radius: var(--ds-radius-card);
+  box-shadow: none;
+  color: var(--ds-ink);
+  font-family: var(--ds-font);
+}
+.modal-backdrop.ds-home h2 { font-weight: 700 !important; }
+.modal-backdrop.ds-home input,
+.modal-backdrop.ds-home textarea,
+.modal-backdrop.ds-home select { font-family: var(--ds-font); color: var(--ds-ink); }
+.modal-backdrop.ds-home input:focus-visible,
+.modal-backdrop.ds-home textarea:focus-visible { outline: 2px solid var(--ds-ink); outline-offset: 1px; }

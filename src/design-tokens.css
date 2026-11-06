@@ -13,6 +13,7 @@
   --ds-accent-green: #34d399;
   --ds-status-error: #c93939;
   --ds-status-success: #0b7e58;
+  --ds-danger-fill: #c93939;
 
   --ds-font: Inter, 'Anuphan', 'Noto Sans Thai', system-ui, sans-serif;
   --ds-text-display: clamp(2rem, 5vw, 3rem);

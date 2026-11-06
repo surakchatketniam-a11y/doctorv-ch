@@ -102,7 +102,7 @@ export default function SearchModal({ isOpen, onClose, onSelectChapter, initialQ
 
   return (
     <div
-      className="modal-backdrop"
+      className="modal-backdrop ds-home"
       onClick={onClose}
       role="dialog"
       aria-modal="true"

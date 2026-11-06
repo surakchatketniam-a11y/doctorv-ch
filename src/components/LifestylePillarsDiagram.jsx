@@ -301,7 +301,7 @@ export default function LifestylePillarsDiagram() {
                   lineHeight: 1.4
                 }}
               >
-                🎯 {p.target}
+                เป้าหมาย: {p.target}
               </div>
 
               <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>

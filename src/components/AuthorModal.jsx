@@ -30,7 +30,7 @@ export default function AuthorModal({ isOpen, onClose }) {
 
   return (
     <div
-      className="modal-backdrop"
+      className="modal-backdrop ds-home"
       onClick={onClose}
       role="dialog"
       aria-modal="true"

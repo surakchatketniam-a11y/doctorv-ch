@@ -119,7 +119,7 @@ export default function QuickTOCModal({
 
   return (
     <div
-      className="modal-backdrop"
+      className="modal-backdrop ds-home"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -202,7 +202,7 @@ export default function QuickTOCModal({
             style={{
               marginBottom: '0.85rem',
               padding: '0.65rem 0.85rem',
-              backgroundColor: lastRead.bookId === 'book2' ? 'rgba(37,99,235,0.08)' : 'rgba(5,150,105,0.08)',
+              backgroundColor: 'var(--ds-surface)',
               border: `1.5px solid ${lastRead.bookId === 'book2' ? 'var(--book2-border)' : 'var(--book1-border)'}`,
               borderRadius: '12px',
               display: 'flex',

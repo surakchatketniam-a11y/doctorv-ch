@@ -95,7 +95,7 @@ export default function Plan7DayModal({ isOpen, onClose, planItems = [], onToggl
   };
 
   return (
-    <div className="modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
+    <div className="modal-backdrop ds-home" onClick={onClose} role="dialog" aria-modal="true">
       <div
         ref={modalRef}
         className="modal-content"
@@ -133,7 +133,7 @@ export default function Plan7DayModal({ isOpen, onClose, planItems = [], onToggl
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
             <span style={{ fontSize: '0.875rem', fontWeight: '700', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              {progressPercent === 100 ? <Trophy size={16} style={{ color: '#eab308' }} /> : <Sparkles size={16} style={{ color: 'var(--accent-primary)' }} />}
+              {progressPercent === 100 ? <Trophy size={16} /> : <Sparkles size={16} style={{ color: 'var(--accent-primary)' }} />}
               <span>ความคืบหน้ารายสัปดาห์</span>
             </span>
             <span style={{ fontSize: '0.875rem', fontWeight: '800', color: 'var(--accent-primary)' }}>
@@ -146,7 +146,7 @@ export default function Plan7DayModal({ isOpen, onClose, planItems = [], onToggl
               style={{
                 height: '100%',
                 width: `${progressPercent}%`,
-                backgroundColor: progressPercent === 100 ? '#22c55e' : 'var(--accent-primary)',
+                backgroundColor: progressPercent === 100 ? 'var(--ds-status-success)' : 'var(--ds-primary)',
                 transition: 'width 0.3s ease'
               }}
             />
@@ -159,7 +159,7 @@ export default function Plan7DayModal({ isOpen, onClose, planItems = [], onToggl
             <div style={{ textAlign: 'center', padding: '2.5rem 1rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
               <Calendar size={36} style={{ margin: '0 auto 0.75rem auto', opacity: 0.5 }} />
               <div style={{ fontWeight: '600', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>ยังไม่มีเป้าหมายในแผน 7 วัน</div>
-              <div>เลือกกด "+ เพิ่มในแผน 7 วัน" จากท้ายบทความ หรือพิมพ์เพิ่มเองด้านล่างได้เลยครับ</div>
+              <div>เลือกกด "ใส่ในแผน 7 วัน" จากท้ายบทความ หรือพิมพ์เพิ่มเองด้านล่างได้เลยครับ</div>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -263,12 +263,12 @@ export default function Plan7DayModal({ isOpen, onClose, planItems = [], onToggl
                 fontSize: '0.8125rem',
                 gap: '0.35rem',
                 padding: '0.45rem 0.85rem',
-                color: copyToast ? '#10b981' : undefined,
-                borderColor: copyToast ? '#10b981' : undefined,
+                color: copyToast ? 'var(--ds-status-success)' : undefined,
+                borderColor: copyToast ? 'var(--ds-status-success)' : undefined,
                 fontWeight: copyToast ? '700' : 'normal'
               }}
             >
-              {copyToast ? <CheckCircle2 size={14} style={{ color: '#10b981' }} /> : <Share2 size={14} />}
+              {copyToast ? <CheckCircle2 size={14} style={{ color: 'var(--ds-status-success)' }} /> : <Share2 size={14} />}
               <span>{copyToast ? 'คัดลอกสรุปแล้ว!' : 'แชร์สรุปแผน'}</span>
             </button>
 
@@ -282,12 +282,12 @@ export default function Plan7DayModal({ isOpen, onClose, planItems = [], onToggl
                 fontSize: '0.8125rem',
                 gap: '0.35rem',
                 padding: '0.45rem 0.85rem',
-                color: linkToast ? '#10b981' : undefined,
-                borderColor: linkToast ? '#10b981' : undefined,
+                color: linkToast ? 'var(--ds-status-success)' : undefined,
+                borderColor: linkToast ? 'var(--ds-status-success)' : undefined,
                 fontWeight: linkToast ? '700' : 'normal'
               }}
             >
-              {linkToast ? <CheckCircle2 size={14} style={{ color: '#10b981' }} /> : <Link2 size={14} />}
+              {linkToast ? <CheckCircle2 size={14} style={{ color: 'var(--ds-status-success)' }} /> : <Link2 size={14} />}
               <span>{linkToast ? 'คัดลอกลิงก์สำเร็จ!' : 'ลิงก์พกพา'}</span>
             </button>
           </div>

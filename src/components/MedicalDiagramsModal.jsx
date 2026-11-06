@@ -91,7 +91,7 @@ export default function MedicalDiagramsModal({ isOpen, onClose, initialDiagram =
 
   return (
     <div
-      className="modal-backdrop print-active-modal"
+      className="modal-backdrop ds-home print-active-modal"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -171,10 +171,6 @@ export default function MedicalDiagramsModal({ isOpen, onClose, initialDiagram =
                     fontSize: '0.825rem',
                     flexShrink: 0,
                     gap: '0.4rem',
-                    backgroundColor: isActive ? d.color : undefined,
-                    borderColor: isActive ? d.color : undefined,
-                    color: isActive ? '#fff' : undefined,
-                    borderRadius: '10px',
                     minHeight: '38px'
                   }}
                 >
@@ -191,7 +187,9 @@ export default function MedicalDiagramsModal({ isOpen, onClose, initialDiagram =
           className="printable-diagram"
           style={{ flex: 1, overflowY: 'auto', paddingRight: '0.25rem' }}
         >
-          <ActiveComponent />
+          <div className="ds-legacy">
+            <ActiveComponent />
+          </div>
         </div>
       </div>
     </div>

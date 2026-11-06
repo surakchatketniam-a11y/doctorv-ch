@@ -1,6 +1,6 @@
 # Design system: หมอวี Health Library (home page)
 
-Base: DESIGN.md Hub "mixed" tokens (Cal.com colors, Airbnb type and flat feel, Apple shapes). Implemented in `src/design-tokens.css` (scoped to `.ds-home`) and `src/home.css`. Reader view and modals are not migrated yet.
+Base: DESIGN.md Hub "mixed" tokens (Cal.com colors, Airbnb type and flat feel, Apple shapes). Implemented in `src/design-tokens.css` (scoped to `.ds-home`), `src/home.css` (home and reader) and `src/modals.css` (modals; each modal root carries `.ds-home`). Medical diagrams keep their colorful infographic style inside a `.ds-legacy` wrapper, which restores the original variables.
 
 ## Colors
 - Canvas `#ffffff`, ink `#111111`, secondary text `#5b6270` (darkened from `#6b7280` for contrast on `#f5f5f5`), surface `#f5f5f5`, hairline `#e5e7eb`.

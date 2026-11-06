@@ -185,7 +185,7 @@ export default function HealthToolsModal({
 
   return (
     <div
-      className="modal-backdrop"
+      className="modal-backdrop ds-home"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -263,7 +263,7 @@ export default function HealthToolsModal({
               padding: '0.5rem 0.4rem',
               fontSize: '0.8rem',
               gap: '0.3rem',
-              backgroundColor: activeTab === 'fast' ? 'var(--danger-border)' : undefined,
+              backgroundColor: activeTab === 'fast' ? 'var(--ds-danger-fill)' : undefined,
               color: activeTab === 'fast' ? '#fff' : undefined,
               whiteSpace: 'nowrap'
             }}
@@ -350,8 +350,7 @@ export default function HealthToolsModal({
                           style={{
                             padding: '0.3rem 0.85rem',
                             fontSize: '0.8rem',
-                            backgroundColor: val === true ? 'var(--book1-color)' : undefined,
-                            color: val === true ? '#fff' : undefined
+                            color: val === true ? 'var(--ds-on-primary)' : undefined
                           }}
                         >
                           <Check size={13} />
@@ -392,7 +391,7 @@ export default function HealthToolsModal({
                         คะแนนวิถีชีวิตสุขภาพของคุณ: {lifestyleYesCount} / 10 ข้อ
                       </span>
                       <span className="badge" style={{ fontWeight: '700' }}>
-                        {lifestyleYesCount >= 8 ? '🌟 วิถีชีวิตยอดเยี่ยม' : lifestyleYesCount >= 5 ? '⚠️ ปานกลาง — ควรปรับปรุงบางด้าน' : '🚨 เสี่ยงสูง — ควรปรับเปลี่ยนพฤติกรรม'}
+                        {lifestyleYesCount >= 8 ? 'วิถีชีวิตยอดเยี่ยม' : lifestyleYesCount >= 5 ? 'ปานกลาง — ควรปรับปรุงบางด้าน' : 'เสี่ยงสูง — ควรปรับเปลี่ยนพฤติกรรม'}
                       </span>
                     </div>
                     <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
@@ -533,7 +532,7 @@ export default function HealthToolsModal({
                   <div style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '14px', padding: '1.15rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                       <div style={{ fontWeight: '700', fontSize: '0.95rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <Sparkles size={16} style={{ color: '#eab308' }} />
+                        <Sparkles size={16} />
                         <span>เลือกนิสัยสุขภาพเพิ่มเข้า "แผน 7 วัน" ของคุณทันที:</span>
                       </div>
                       {onOpenPlan && planItems.length > 0 && (
@@ -543,18 +542,18 @@ export default function HealthToolsModal({
                           className="badge badge-primary"
                           style={{ cursor: 'pointer', padding: '0.25rem 0.65rem', fontSize: '0.75rem' }}
                         >
-                          ดูแผนสุขภาพ ({planItems.length} ข้อ) ›
+                          ดูแผนสุขภาพ ({planItems.length} ข้อ)
                         </button>
                       )}
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                       {[
-                        { text: '🥗 รับประทานผักหลากสี 2 ทัพพีทุกมื้ออาหาร', condition: !lifestyleAnswers.l1 },
-                        { text: '💧 ดื่มน้ำสะอาด 1.5 - 2 ลิตรต่อวัน', condition: !lifestyleAnswers.l2 },
-                        { text: '🚶‍♂️ เดินเร็วหรือออกกำลังกายสะสมวันละ 30 นาที', condition: !lifestyleAnswers.l3 },
-                        { text: '😴 เข้านอนและตื่นนอนตรงเวลาสม่ำเสมอทุกวัน', condition: !lifestyleAnswers.l6 },
-                        { text: '🧘 นั่งสมาธิหรือฝึกหายใจลึก 5-10 นาทีต่อวัน', condition: !lifestyleAnswers.l7 }
+                        { text: 'รับประทานผักหลากสี 2 ทัพพีทุกมื้ออาหาร', condition: !lifestyleAnswers.l1 },
+                        { text: 'ดื่มน้ำสะอาด 1.5 - 2 ลิตรต่อวัน', condition: !lifestyleAnswers.l2 },
+                        { text: 'เดินเร็วหรือออกกำลังกายสะสมวันละ 30 นาที', condition: !lifestyleAnswers.l3 },
+                        { text: 'เข้านอนและตื่นนอนตรงเวลาสม่ำเสมอทุกวัน', condition: !lifestyleAnswers.l6 },
+                        { text: 'นั่งสมาธิหรือฝึกหายใจลึก 5-10 นาทีต่อวัน', condition: !lifestyleAnswers.l7 }
                       ].map((habit) => {
                         const added = isHabitAdded(habit.text);
                         return (
@@ -595,7 +594,7 @@ export default function HealthToolsModal({
                               ) : (
                                 <>
                                   <Plus size={13} />
-                                  <span>+ ใส่ในแผน 7 วัน</span>
+                                  <span>ใส่ในแผน 7 วัน</span>
                                 </>
                               )}
                             </button>
@@ -673,7 +672,7 @@ export default function HealthToolsModal({
                       style={{
                         padding: '0.3rem 0.85rem',
                         fontSize: '0.8rem',
-                        backgroundColor: fastAnswers.face === true ? 'var(--danger-border)' : undefined,
+                        backgroundColor: fastAnswers.face === true ? 'var(--ds-danger-fill)' : undefined,
                         color: fastAnswers.face === true ? '#fff' : undefined
                       }}
                     >
@@ -715,7 +714,7 @@ export default function HealthToolsModal({
                       style={{
                         padding: '0.3rem 0.85rem',
                         fontSize: '0.8rem',
-                        backgroundColor: fastAnswers.arm === true ? 'var(--danger-border)' : undefined,
+                        backgroundColor: fastAnswers.arm === true ? 'var(--ds-danger-fill)' : undefined,
                         color: fastAnswers.arm === true ? '#fff' : undefined
                       }}
                     >
@@ -757,7 +756,7 @@ export default function HealthToolsModal({
                       style={{
                         padding: '0.3rem 0.85rem',
                         fontSize: '0.8rem',
-                        backgroundColor: fastAnswers.speech === true ? 'var(--danger-border)' : undefined,
+                        backgroundColor: fastAnswers.speech === true ? 'var(--ds-danger-fill)' : undefined,
                         color: fastAnswers.speech === true ? '#fff' : undefined
                       }}
                     >
@@ -791,7 +790,7 @@ export default function HealthToolsModal({
                     >
                       <div style={{ fontWeight: '800', fontSize: '1.15rem', color: 'var(--danger-text)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <AlertTriangle size={22} />
-                        <span>⚠️ สงสัยภาวะหลอดเลือดสมองเฉียบพลัน (Stroke)!</span>
+                        <span>สงสัยภาวะหลอดเลือดสมองเฉียบพลัน (Stroke)!</span>
                       </div>
                       <p style={{ fontSize: '0.9rem', lineHeight: '1.6', color: 'var(--text-primary)', marginBottom: '1rem' }}>
                         ผู้ป่วยมีสัญญาณเตือนของโรคหลอดเลือดสมอง <strong>ห้ามรอดูอาการที่บ้านเด็ดขาด</strong> และ <strong>ห้ามให้ผู้ป่วยรับประทานอาหารหรือยาเอง</strong> ให้รีบโทรเรียกรถพยาบาลฉุกเฉินทันทีเพื่อรับการรักษาภายใน 4.5 ชั่วโมง (Golden Hour)
@@ -801,7 +800,7 @@ export default function HealthToolsModal({
                           href="tel:1669"
                           className="btn btn-primary"
                           style={{
-                            backgroundColor: 'var(--danger-border)',
+                            backgroundColor: 'var(--ds-danger-fill)',
                             fontSize: '0.95rem',
                             padding: '0.65rem 1.25rem',
                             fontWeight: '700',
@@ -865,13 +864,13 @@ export default function HealthToolsModal({
                   style={{ fontSize: '0.825rem', padding: '0.45rem 1rem', gap: '0.4rem', borderRadius: '10px' }}
                 >
                   <Brain size={15} style={{ color: 'var(--book2-color)' }} />
-                  <span>{showFastDiagram ? 'ซ่อนแผนผังการแพทย์ FAST' : '📊 ดูแผนผังการแพทย์ FAST & Golden Hour 4.5 ชม.'}</span>
+                  <span>{showFastDiagram ? 'ซ่อนแผนผังการแพทย์ FAST' : 'ดูแผนผังการแพทย์ FAST & Golden Hour 4.5 ชม.'}</span>
                 </button>
               </div>
 
               {showFastDiagram && (
                 <div style={{ marginTop: '1rem' }}>
-                  <FastStrokeDiagram />
+                  <div className="ds-legacy"><FastStrokeDiagram /></div>
                 </div>
               )}
             </div>
@@ -999,8 +998,8 @@ export default function HealthToolsModal({
                     </div>
 
                     {[
-                      '🧠 เล่นเกมฝึกความจำหรือเรียนรู้สิ่งใหม่ 15 นาทีต่อวัน',
-                      '🐟 รับประทานปลาทะเลหรือไขมันดี (Omega-3) 2 มื้อ/สัปดาห์'
+                      'เล่นเกมฝึกความจำหรือเรียนรู้สิ่งใหม่ 15 นาทีต่อวัน',
+                      'รับประทานปลาทะเลหรือไขมันดี (Omega-3) 2 มื้อ/สัปดาห์'
                     ].map((habitText) => {
                       const added = isHabitAdded(habitText);
                       return (
@@ -1040,7 +1039,7 @@ export default function HealthToolsModal({
                             ) : (
                               <>
                                 <Plus size={13} />
-                                <span>+ ใส่ในแผน 7 วัน</span>
+                                <span>ใส่ในแผน 7 วัน</span>
                               </>
                             )}
                           </button>
@@ -1187,9 +1186,9 @@ export default function HealthToolsModal({
                     </div>
 
                     {[
-                      '☕ งดดื่มชา กาแฟ และเครื่องดื่มคาเฟอีนหลัง 14:00 น.',
-                      '📱 วางโทรศัพท์มือถือห่างเตียงนอน และงดดูหน้าจอ 30 นาทีก่อนนอน',
-                      '🌙 ปรับห้องนอนให้มืดสนิท เงียบ และอุณหภูมิเย็นสบาย 24-25°C'
+                      'งดดื่มชา กาแฟ และเครื่องดื่มคาเฟอีนหลัง 14:00 น.',
+                      'วางโทรศัพท์มือถือห่างเตียงนอน และงดดูหน้าจอ 30 นาทีก่อนนอน',
+                      'ปรับห้องนอนให้มืดสนิท เงียบ และอุณหภูมิเย็นสบาย 24-25°C'
                     ].map((habitText) => {
                       const added = isHabitAdded(habitText);
                       return (
@@ -1229,7 +1228,7 @@ export default function HealthToolsModal({
                             ) : (
                               <>
                                 <Plus size={13} />
-                                <span>+ ใส่ในแผน 7 วัน</span>
+                                <span>ใส่ในแผน 7 วัน</span>
                               </>
                             )}
                           </button>
